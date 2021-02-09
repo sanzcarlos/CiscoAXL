@@ -7,6 +7,7 @@ __all__ = ['cspaxl_version',
            'cspaxl_Location',
            'cspaxl_Phone',
            'cspaxl_ProcessNode',
+           'cspaxl_Region',
            'cspaxl_TransPattern',
            'cspaxl_User',
            ]

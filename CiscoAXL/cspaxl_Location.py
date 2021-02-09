@@ -57,20 +57,28 @@ def Add(logger,csp_soap_client,cucm_variable_axl):
     # *
 
     # Mandatory (pattern,usage,routePartitionName)
-    axl_cucm_Location = cucm_variable_axl
-    axl_cucm_Location['withinAudioBandwidth'] = 0
-    axl_cucm_Location['withinVideoBandwidth'] = 0
+    axl_cucm = {}
+    axl_cucm['name'] = 'L_' + cucm_variable_axl['SiteID']
+    axl_cucm['withinAudioBandwidth'] = 0
+    axl_cucm['withinVideoBandwidth'] = 0
+    axl_cucm['withinImmersiveKbits'] = 0
+    axl_cucm['betweenLocations'] = {'betweenLocation': {'locationName': 'Hub_None','weight': 50, 'audioBandwidth': 0,'videoBandwidth': 0,'immersiveBandwidth': 0}}
+
+    # Limitamos el numero de caracteres de las variables
+    axl_cucm['name'] = axl_cucm['name'][:50]
+
     # Damos de alta la Location
     try:
-        result = csp_soap_client.service.addLocation(axl_cucm_Location)
+        result = csp_soap_client.addLocation(axl_cucm)
     except:
         logger.debug(sys.exc_info())
-        logger.error(sys.exc_info()[1])
+        logger.error('Ya existe la Location - %s' % (sys.exc_info()[1]))
         return {'Status': False, 'Detail': sys.exc_info()[1]}
     else:
         csp_table = PrettyTable(['UUID','Location'])
-        csp_table.add_row([result['return'][:],axl_cucm_Location ])
+        csp_table.add_row([result['return'][:],axl_cucm['name'] ])
         csp_table_response = csp_table.get_string(fields=['UUID','Location'], sortby="UUID").encode('latin-1')
+        logger.info('Result:\n%s' % (csp_table_response.decode("utf-8")))
         return {'Status':True,'Detail':csp_table_response}
 
 def Get(logger,csp_soap_client,cucm_variable_axl):
@@ -97,15 +105,13 @@ def Get(logger,csp_soap_client,cucm_variable_axl):
 
     # Mandatory (pattern,usage,routePartitionName)
     try:
-        result = csp_soap_client.service.getProcessNode(name=cucm_variable_axl)
+        result = csp_soap_client.getLocation(name='L_'+cucm_variable_axl['SiteID'])
     except:
         logger.debug(sys.exc_info())
         logger.error(sys.exc_info()[1])
         return {'Status': False, 'Detail': sys.exc_info()[1]}
     else:
-        csp_table = PrettyTable(['id','name','description','mac','ipv6Name','nodeUsage','lbmHubGroup','processNodeRole'])
-        csp_table.add_row([0,result['return']['processNode']['name'],result['return']['processNode']['description'],result['return']['processNode']['mac'],result['return']['processNode']['ipv6Name'],result['return']['processNode']['nodeUsage'],result['return']['processNode']['lbmHubGroup'],result['return']['processNode']['processNodeRole'] ])
-        csp_table_response = csp_table.get_string(fields=['id','name','description','mac','ipv6Name','nodeUsage','lbmHubGroup','processNodeRole'], sortby="id").encode('latin-1')
+        print (result)
         return {'Status':True,'Detail':csp_table_response}
 
 def List(logger,csp_soap_client,cucm_variable_axl):

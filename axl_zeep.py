@@ -29,6 +29,8 @@ from lxml import etree
 from requests import Session
 from requests.auth import HTTPBasicAuth
 
+from CiscoAXL import *
+
 from zeep import Client, Settings, Plugin, xsd
 from zeep.transports import Transport
 from zeep.cache import SqliteCache
@@ -59,6 +61,8 @@ class PrettyLog():
 # Argumentos pasados por linea de comandos
 def parse_command_line(args):
     logger.debug('Ha entrado en la funcion parse_command_line()')
+    # Creamos las variables globales que vamos a tener que utilizar en el resto del Script
+    global csv_config_file
     global element_config_file
     global cspconfigfile
     try:
@@ -83,6 +87,10 @@ def parse_command_line(args):
             element_config_file = 'conf/' + args
             logger.info('Ha seleccionado el fichero de configuracion: %s' % (element_config_file))
             cspconfigfile = ConfigObj(element_config_file)
+        elif option in ("-f", "--csv-file"):
+            logger.debug('Se ha pasado un fichero de carga masiva')
+            csv_config_file = 'csv/' + args
+            logger.info('Ha seleccionado el fichero de carga masiva: %s' % (csv_config_file))
 
     # No se ha pasado un fichero de configuracion como argumento del script
     if(element_config_file==None):
@@ -120,7 +128,7 @@ def parse_command_line(args):
 # Help function
 def get_usage():
     logger.debug('Ha entrado en la funcion get_usage()')
-    return "Uso: -c <Config file>"
+    return "Uso: -c <Config file> -f <CSV File>"
 
 # This class lets you view the incoming and outgoing http headers and/or XML
 class MyLoggingPlugin(Plugin):
@@ -192,15 +200,65 @@ def client_soap(config_file):
         return service
 
 # Funcion para dar de alta una sede
-def AltaSede(logger,csp_soap_client, cspconfigfile):
+def AltaSede(logger, service, cspconfigfile, csv_config_file):
     '''
     # *------------------------------------------------------------------
-    # * function AltaSede(logger,csp_soap_client, cspconfigfile):
+    # * function AltaSede(logger, service, cspconfigfile, csv_config_file):
     # *
     # * Copyright (C) 2021 Carlos Sanz <carlos.sanzpenas@gmail.com>
     # *
     # *------------------------------------------------------------------
     '''
+    logger.debug('Ha entrado en la funcion AltaSede')
+
+    try:
+        csv_file = open(csv_config_file, 'r', encoding='utf-8')
+    except:
+        logger.error('Se ha producido un error al abrir el archivo %s' % (csv_config_file))
+        logger.debug(sys.exc_info())
+        logger.error(sys.exc_info()[1])
+        sys.exit()
+    else:
+        logger.info('Se ha abierto el archivo %s' % (csv_config_file))
+
+        field_names = (
+            'SiteID', 'UserFirstName', 'UserSurname', 'UserId', 'DirectoryNumber', 'ToIPModel', 'MACAddress', 'DID', 'CallingSearchSpace', 'VoiceMail', 'Locale' )
+        file_reader = csv.DictReader(csv_file, field_names)
+
+        add_status = PrettyTable(['SiteID', 'UserFirstName', 'UserSurname', 'UserId', 'DirectoryNumber', 'ToIPModel', 'MACAddress', 'DID', 'CallingSearchSpace', 'VoiceMail', 'Locale'])
+        for row in file_reader:
+            # Borramos los espacios que puedan tener
+            row['SiteID']             = row['SiteID'].strip()
+            row['UserFirstName']      = row['UserFirstName'].strip()
+            row['UserSurname']        = row['UserSurname'].strip()
+            row['DirectoryNumber']    = row['DirectoryNumber'].strip()
+            row['ToIPModel']          = row['ToIPModel'].strip()
+            row['MACAddress']         = row['MACAddress'].strip()
+            row['DID']                = row['DID'].strip()
+            row['CallingSearchSpace'] = row['CallingSearchSpace'].strip()
+            row['VoiceMail']          = row['VoiceMail'].strip()
+            row['Locale']             = row['Locale'].strip()
+            
+            # Region
+            '''
+            # *------------------------------------------------------------------
+            # * Region - Formato: 'R_' + SiteID
+            # *------------------------------------------------------------------
+            '''
+            # Damos de alta la Region
+            temp = cspaxl_Region.Add(logger, service, row)
+
+            # Location
+            '''
+            # *------------------------------------------------------------------
+            # * Location - Formato: 'L_' + SiteID
+            # *------------------------------------------------------------------
+            '''
+            # Damos de alta la Location
+            temp = cspaxl_Location.Add(logger, service, row)
+
+
+
 
 # Main Function
 if __name__=='__main__':
@@ -214,24 +272,15 @@ if __name__=='__main__':
     element_config_file = None
     history = None
     logger = logging.getLogger('cisco.cucm.axl.zeep')
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.INFO)
 
     console = logging.StreamHandler()
-    #formatter = logging.Formatter('%(asctime)-25s %(name)s [%(process)d]: %(levelname)-8s %(message)s')
     formatter = logging.Formatter('%(asctime)-22s | %(filename)s:%(lineno)-4s | %(levelname)-9s | %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
     console.setFormatter(formatter)
     console.setLevel=logger.setLevel
     logging.getLogger('').addHandler(console)
 
     logger.info('Estamos usando Python v%s' % (platform.python_version()))
-
-    '''
-    logger.debug('This is a debug message %s' % (variable))
-    logger.info('This is an info message')
-    logger.warning('This is a warning message')
-    logger.error('This is an error message')
-    logger.critical('This is a critical error message')
-    '''
 
     # Llamamos a la funcion parse_command_line
     if not parse_command_line(sys.argv):
@@ -242,26 +291,7 @@ if __name__=='__main__':
     # Creamos nuestro cliente SOAP con los parametros del fichero de configuracion
     service = client_soap(element_config_file)
 
-    '''
-    Codigo para verificar que esta funcionando la conexion SOAP con el CUCM
-    soap_data = {
-        'userid': 'enrique.sacido'
-    }
+    AltaSede(logger, service, cspconfigfile, csv_config_file)
 
-    try:
-        user_resp = service.getUser(**soap_data)
-    except Fault as err:
-        logger.error('Se ha producido un error en la consulta SOAP: %s' % format(err))
-        logger.debug(sys.exc_info())
-        logger.error(sys.exc_info()[1])
-        sys.exit()
-    else:
-        logger.info('getUser Response:\n %s' % user_resp)
-        logger.debug('HTTP Last Send:\n %s' % PrettyLog(history.last_sent))
-        logger.debug('HTTP Last Received:\n %s' % PrettyLog(history.last_received))
-    '''
-
-    #CiscoCustomer.Customer(logger, csp_soap_client,cspconfigfile)
-    #Customer(logger, csp_soap_client,cspconfigfile)
     logger.info('Se cerrara el programa')
     sys.exit()
