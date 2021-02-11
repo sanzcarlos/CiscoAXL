@@ -1,0 +1,170 @@
+2021-02-11 13:03:02 | axl_zeep.py       :300  | INFO      | Estamos usando Python v3.7.3
+2021-02-11 13:03:02 | axl_zeep.py       :88   | INFO      | Ha seleccionado el fichero de configuracion: conf/NTT-Staging.cfg
+2021-02-11 13:03:02 | axl_zeep.py       :93   | INFO      | Ha seleccionado el fichero de carga masiva: csv/0011.csv
+2021-02-11 13:03:02 | axl_zeep.py       :307  | INFO      | Se ha seleccionado el cliente: NTT STAGING
+2021-02-11 13:03:04 | axl_zeep.py       :199  | INFO      | Se ha creado el cliente SOAP.
+2021-02-11 13:03:04 | axl_zeep.py       :222  | INFO      | Se ha abierto el archivo csv/0011.csv
+2021-02-11 13:03:05 | cspaxl_DevicePool.py:132  | INFO      | Result:
+{
+    'return': {
+        'devicePool': {
+            'name': 'DP_0011_ORANGE',
+            'autoSearchSpaceName': {
+                '_value_1': None,
+                'uuid': None
+            },
+            'dateTimeSettingName': {
+                '_value_1': 'DTG_Spain',
+                'uuid': '{F2CB5143-62E9-1E8C-2655-DDC63699EA23}'
+            },
+            'callManagerGroupName': {
+                '_value_1': 'PUB',
+                'uuid': '{D13C4201-7802-11D3-BDF0-00108302EAD1}'
+            },
+            'mediaResourceListName': {
+                '_value_1': 'MRGL_Core',
+                'uuid': '{82CCD45C-D251-113A-B148-C80772D25814}'
+            },
+            'regionName': {
+                '_value_1': 'Local_endpoints',
+                'uuid': '{75042205-4423-3401-E97E-3CDE48C84176}'
+            },
+            'networkLocale': None,
+            'srstName': {
+                '_value_1': 'Disable',
+                'uuid': '{CD241E11-4A58-4D3D-9661-F06C912A18A3}'
+            },
+            'connectionMonitorDuration': -1,
+            'automatedAlternateRoutingCssName': {
+                '_value_1': None,
+                'uuid': None
+            },
+            'aarNeighborhoodName': {
+                '_value_1': None,
+                'uuid': None
+            },
+            'locationName': {
+                '_value_1': 'L_Endpoints',
+                'uuid': '{1010502F-81C9-E5B1-D1B3-A8FFDFBF5A09}'
+            },
+            'mobilityCssName': {
+                '_value_1': None,
+                'uuid': None
+            },
+            'physicalLocationName': {
+                '_value_1': None,
+                'uuid': None
+            },
+            'deviceMobilityGroupName': {
+                '_value_1': None,
+                'uuid': None
+            },
+            'revertPriority': 'Default',
+            'singleButtonBarge': 'Default',
+            'joinAcrossLines': 'Default',
+            'cgpnTransformationCssName': {
+                '_value_1': None,
+                'uuid': None
+            },
+            'cdpnTransformationCssName': {
+                '_value_1': None,
+                'uuid': None
+            },
+            'localRouteGroupName': None,
+            'geoLocationName': {
+                '_value_1': None,
+                'uuid': None
+            },
+            'geoLocationFilterName': {
+                '_value_1': None,
+                'uuid': None
+            },
+            'callingPartyNationalPrefix': 'Default',
+            'callingPartyInternationalPrefix': 'Default',
+            'callingPartyUnknownPrefix': 'Default',
+            'callingPartySubscriberPrefix': 'Default',
+            'adjunctCallingSearchSpace': {
+                '_value_1': None,
+                'uuid': None
+            },
+            'callingPartyNationalStripDigits': None,
+            'callingPartyInternationalStripDigits': None,
+            'callingPartyUnknownStripDigits': None,
+            'callingPartySubscriberStripDigits': None,
+            'callingPartyNationalTransformationCssName': {
+                '_value_1': None,
+                'uuid': None
+            },
+            'callingPartyInternationalTransformationCssName': {
+                '_value_1': None,
+                'uuid': None
+            },
+            'callingPartyUnknownTransformationCssName': {
+                '_value_1': None,
+                'uuid': None
+            },
+            'callingPartySubscriberTransformationCssName': {
+                '_value_1': None,
+                'uuid': None
+            },
+            'calledPartyNationalPrefix': 'Default',
+            'calledPartyInternationalPrefix': 'Default',
+            'calledPartyUnknownPrefix': 'Default',
+            'calledPartySubscriberPrefix': 'Default',
+            'calledPartyNationalStripDigits': None,
+            'calledPartyInternationalStripDigits': None,
+            'calledPartyUnknownStripDigits': None,
+            'calledPartySubscriberStripDigits': None,
+            'calledPartyNationalTransformationCssName': {
+                '_value_1': None,
+                'uuid': None
+            },
+            'calledPartyInternationalTransformationCssName': {
+                '_value_1': None,
+                'uuid': None
+            },
+            'calledPartyUnknownTransformationCssName': {
+                '_value_1': None,
+                'uuid': None
+            },
+            'calledPartySubscriberTransformationCssName': {
+                '_value_1': None,
+                'uuid': None
+            },
+            'imeEnrolledPatternGroupName': {
+                '_value_1': None,
+                'uuid': None
+            },
+            'cntdPnTransformationCssName': {
+                '_value_1': None,
+                'uuid': None
+            },
+            'localRouteGroup': [
+                {
+                    'name': None,
+                    'value': None
+                }
+            ],
+            'redirectingPartyTransformationCSS': {
+                '_value_1': None,
+                'uuid': None
+            },
+            'callingPartyTransformationCSS': {
+                '_value_1': None,
+                'uuid': None
+            },
+            'wirelessLanProfileGroup': {
+                '_value_1': None,
+                'uuid': None
+            },
+            'elinGroup': {
+                '_value_1': None,
+                'uuid': None
+            },
+            'mraServiceDomain': None,
+            'uuid': '{99D9B97F-14AD-4891-BCE7-03DD0136C929}'
+        }
+    },
+    'sequence': None
+}
+2021-02-11 13:03:05 | axl_zeep.py       :313  | INFO      | Se cerrara el programa

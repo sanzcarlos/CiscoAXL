@@ -5,7 +5,7 @@
 # *
 # * Cisco AXL Python
 # *
-# * Copyright (C) 2015 Carlos Sanz <carlos.sanzpenas@gmail.com>
+# * Copyright (C) 2021 Carlos Sanz <carlos.sanzpenas@gmail.com>
 # *
 # *  This program is free software; you can redistribute it and/or
 # * modify it under the terms of the GNU General Public License
@@ -33,8 +33,6 @@ import suds
 import ssl
 
 from prettytable import PrettyTable
-#from configobj import ConfigObj
-#from suds.client import Client
 
 def Add(logger,csp_soap_client,cucm_variable_axl):
     # *------------------------------------------------------------------
@@ -61,7 +59,7 @@ def Add(logger,csp_soap_client,cucm_variable_axl):
     # Mandatory (pattern,usage)
     logger.debug('Se ha entrado en la funcion Add del archivo cspaxl_DevicePool.py')
     axl_cucm = {}
-    axl_cucm['name'] = 'DP_' + cucm_variable_axl['Country'] + '_' + cucm_variable_axl['SiteCode']
+    axl_cucm['name'] = 'DP_' + cucm_variable_axl['SiteID'] + '_ORANGE'
     axl_cucm['dateTimeSettingName'] = 'Device'
     
     # Limitamos el numero de caracteres de las variables
@@ -104,7 +102,7 @@ def Get(logger,csp_soap_client,cucm_variable_axl):
     # *------------------------------------------------------------------
     # * function Get(logger,csp_soap_client,cucm_variable_axl)
     # *
-    # * Copyright (C) 2016 Carlos Sanz <carlos.sanzpenas@gmail.com>
+    # * Copyright (C) 2021 Carlos Sanz <carlos.sanzpenas@gmail.com>
     # *
     # *  This program is free software; you can redistribute it and/or
     # * modify it under the terms of the GNU General Public License
@@ -123,17 +121,16 @@ def Get(logger,csp_soap_client,cucm_variable_axl):
     # *
 
     # Mandatory (pattern,usage,routePartitionName)
+    logger.debug('Se ha entrado en la funcion Get del archivo cspaxl_DevicePool.py')
     try:
-        result = csp_soap_client.service.getProcessNode(name=cucm_variable_axl)
+        result = csp_soap_client.getDevicePool(name='DP_'+cucm_variable_axl['SiteID']+'_ORANGE')
     except:
         logger.debug(sys.exc_info())
         logger.error(sys.exc_info()[1])
         return {'Status': False, 'Detail': sys.exc_info()[1]}
     else:
-        csp_table = PrettyTable(['id','name','description','mac','ipv6Name','nodeUsage','lbmHubGroup','processNodeRole'])
-        csp_table.add_row([0,result['return']['processNode']['name'],result['return']['processNode']['description'],result['return']['processNode']['mac'],result['return']['processNode']['ipv6Name'],result['return']['processNode']['nodeUsage'],result['return']['processNode']['lbmHubGroup'],result['return']['processNode']['processNodeRole'] ])
-        csp_table_response = csp_table.get_string(fields=['id','name','description','mac','ipv6Name','nodeUsage','lbmHubGroup','processNodeRole'], sortby="id").encode('latin-1')
-        return {'Status':True,'Detail':csp_table_response}
+        logger.info('Result:\n%s' % (result))
+        return {'Status':True,'Detail':result}
 
 def List(logger,csp_soap_client,cucm_variable_axl):
     # *------------------------------------------------------------------

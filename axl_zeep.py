@@ -177,7 +177,7 @@ def client_soap(config_file):
     session.verify = False
     session.auth = HTTPBasicAuth(csp_username, csp_password)
 
-    transport = Transport(session=session, timeout=10, cache=SqliteCache())
+    transport = Transport(session=session, timeout=5, cache=SqliteCache())
     
     # strict=False is not always necessary, but it allows zeep to parse imperfect XML
     settings = Settings(strict=False, xml_huge_tree=True)
@@ -245,8 +245,8 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
             # * Region - Formato: 'R_' + SiteID
             # *------------------------------------------------------------------
             '''
-            # Damos de alta la Region
-            temp = cspaxl_Region.Add(logger, service, row)
+            # Damos de alta la Region - OK
+            #temp = cspaxl_Region.Add(logger, service, row)
 
             # Location
             '''
@@ -254,17 +254,34 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
             # * Location - Formato: 'L_' + SiteID
             # *------------------------------------------------------------------
             '''
-            # Damos de alta la Location
-            temp = cspaxl_Location.Add(logger, service, row)
+            # Damos de alta la Location - OK
+            #temp = cspaxl_Location.Add(logger, service, row)
 
+            # Device Pool
+            '''
+            # *------------------------------------------------------------------
+            # * Device Pool - Formato: 'DP_' + SiteID + '_ORANGE'
+            # *------------------------------------------------------------------
+            '''
+            # Damos el Device Pool
+            temp = cspaxl_DevicePool.Get(logger, service, row)
+
+            # Call Pick Up Group
+            '''
+            # *------------------------------------------------------------------
+            # * Call Pick Up Group - Formato: 'L_' + SiteID
+            # *------------------------------------------------------------------
+            '''
+            # Damos de alta la Location
+            #temp = cspaxl_Location.Add(logger, service, row)
 
 
 
 # Main Function
 if __name__=='__main__':
     logging.basicConfig(level=logging.INFO,
-                        format='%(asctime)-25s %(name)s [%(process)d]: %(levelname)-8s %(message)s',
-                        datefmt='%a, %d %b %Y %H:%M:%S',
+                        format='%(asctime)-18s | %(filename)-18s:%(lineno)-4s | %(levelname)-9s | %(message)s',
+                        datefmt='%Y-%m-%d %H:%M:%S',
                         filename='Log/' + time.strftime("%Y%m%d-%H%M%S-") + str(uuid.uuid4()) + '.log',
                         filemode='w',
                         )
@@ -275,7 +292,7 @@ if __name__=='__main__':
     logger.setLevel(logging.INFO)
 
     console = logging.StreamHandler()
-    formatter = logging.Formatter('%(asctime)-22s | %(filename)s:%(lineno)-4s | %(levelname)-9s | %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+    formatter = logging.Formatter('%(asctime)-18s | %(filename)-18s:%(lineno)-4s | %(levelname)-9s | %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
     console.setFormatter(formatter)
     console.setLevel=logger.setLevel
     logging.getLogger('').addHandler(console)

@@ -71,7 +71,7 @@ def Add(logger, csp_soap_client, cucm_variable_axl):
         result = csp_soap_client.addRegion(axl_cucm)
     except:
         logger.debug(sys.exc_info())
-        logger.error('Ya existe la Region - %s' % (sys.exc_info()[1]))
+        logger.error('%s' % (sys.exc_info()[1]))
         return {'Status': False, 'Detail': sys.exc_info()[1]}
     else:
         csp_table = PrettyTable(['UUID','name'])
