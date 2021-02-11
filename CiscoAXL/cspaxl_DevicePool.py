@@ -56,46 +56,33 @@ def Add(logger,csp_soap_client,cucm_variable_axl):
     # *------------------------------------------------------------------
     # *
 
-    # Mandatory (pattern,usage)
+    # Mandatory (name,dateTimeSettingName, callManagerGroupName, regionName, srstName, aarNeighborhoodName, location)
     logger.debug('Se ha entrado en la funcion Add del archivo cspaxl_DevicePool.py')
     axl_cucm = {}
     axl_cucm['name'] = 'DP_' + cucm_variable_axl['SiteID'] + '_ORANGE'
-    axl_cucm['dateTimeSettingName'] = 'Device'
+    axl_cucm['dateTimeSettingName'] = 'DTG_Spain'
+    axl_cucm['callManagerGroupName'] = 'PUB'
+    axl_cucm['regionName'] = 'R_' + cucm_variable_axl['SiteID']
+    axl_cucm['srstName'] = 'Disable'
+    axl_cucm['locationName'] = 'L_' + cucm_variable_axl['SiteID']
     
     # Limitamos el numero de caracteres de las variables
-    axl_cucm['alertingName'] = axl_cucm['alertingName'][:50]
-    axl_cucm['asciiAlertingName'] = axl_cucm['asciiAlertingName'][:32]
-    #axl_cucm_Line['parkMonForwardNoRetrieveDn'] = axl_cucm_Line['parkMonForwardNoRetrieveDn'][:50]
-    #axl_cucm_Line['parkMonForwardNoRetrieveIntDn'] = axl_cucm_Line['parkMonForwardNoRetrieveIntDn'][:50]
+    axl_cucm['name'] = axl_cucm['name'][:50]
+    axl_cucm['regionName'] = axl_cucm['regionName'][:50]
+    axl_cucm['locationName'] = axl_cucm['locationName'][:50]
 
-    # Comprobamos que la extension no existe
+    # Damos de alta el Device Pool
     try:
-        csp_soap_returnedTags = {'pattern': '', 'routePartitionName': '', 'description': '', 'shareLineAppearanceCssName': ''}
-        csp_soap_searchCriteria = {'pattern': cucm_variable_axl['DirectoryNumber'],'routePartitionName':'INTERNA'}
-        result = csp_soap_client.service.listLine(csp_soap_searchCriteria,csp_soap_returnedTags)
+        result = csp_soap_client.addDevicePool(axl_cucm)
     except:
         logger.debug(sys.exc_info())
-        logger.error(sys.exc_info()[1])
-        return {'Status': False, 'Detail': result}
-
-    else:
-        if (len(result['return']) == 0):
-            logger.info("La extension " + cucm_variable_axl['DirectoryNumber'] + " no existe en el CUCM")
-        else:
-            logger.error("La extension " + cucm_variable_axl['DirectoryNumber'] + " existe en el CUCM")
-            return {'Status': False, 'Detail': cucm_variable_axl['DirectoryNumber']}
-    # Damos de alta la L�nea
-    try:
-        result = csp_soap_client.service.addLine(axl_cucm)
-    except:
-        logger.debug(sys.exc_info())
-        logger.error(sys.exc_info()[1])
+        logger.error('%s' % (sys.exc_info()[1]))
         return {'Status': False, 'Detail': sys.exc_info()[1]}
     else:
-        csp_table = PrettyTable(['UUID','pattern','routePartitionName'])
-        csp_table.add_row([result['return'][:], axl_cucm['pattern'], axl_cucm['routePartitionName']])
-        csp_table_response = csp_table.get_string(fields=['UUID', 'pattern', 'routePartitionName'],
-                                                  sortby="UUID").encode('latin-1')
+        csp_table = PrettyTable(['UUID','Device Pool'])
+        csp_table.add_row([result['return'][:],axl_cucm['name'] ])
+        csp_table_response = csp_table.get_string(fields=['UUID','Device Pool'], sortby="UUID").encode('latin-1')
+        logger.info('Result:\n%s' % (csp_table_response.decode("utf-8")))
         return {'Status':True,'Detail':csp_table_response}
 
 def Get(logger,csp_soap_client,cucm_variable_axl):

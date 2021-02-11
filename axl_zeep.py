@@ -246,7 +246,7 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
             # *------------------------------------------------------------------
             '''
             # Damos de alta la Region - OK
-            #temp = cspaxl_Region.Add(logger, service, row)
+            temp = cspaxl_Region.Add(logger, service, row)
 
             # Location
             '''
@@ -255,7 +255,7 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
             # *------------------------------------------------------------------
             '''
             # Damos de alta la Location - OK
-            #temp = cspaxl_Location.Add(logger, service, row)
+            temp = cspaxl_Location.Add(logger, service, row)
 
             # Device Pool
             '''
@@ -263,8 +263,8 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
             # * Device Pool - Formato: 'DP_' + SiteID + '_ORANGE'
             # *------------------------------------------------------------------
             '''
-            # Damos el Device Pool
-            temp = cspaxl_DevicePool.Get(logger, service, row)
+            # Damos el Device Pool - OK
+            temp = cspaxl_DevicePool.Add(logger, service, row)
 
             # Call Pick Up Group
             '''
