@@ -1,6 +1,7 @@
 __all__ = ['cspaxl_version',
            'cspaxl_CalledPartyTransformationPattern',
            'cspaxl_CallingPartyTransformationPattern',
+           'cspaxl_CallPickupGroup',
            'cspaxl_DevicePool',
            'cspaxl_LdapSync',
            'cspaxl_Line',

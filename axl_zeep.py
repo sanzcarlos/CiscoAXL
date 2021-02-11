@@ -240,42 +240,19 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
             row['Locale']             = row['Locale'].strip()
             
             # Region
-            '''
-            # *------------------------------------------------------------------
-            # * Region - Formato: 'R_' + SiteID
-            # *------------------------------------------------------------------
-            '''
-            # Damos de alta la Region - OK
             temp = cspaxl_Region.Add(logger, service, row)
 
             # Location
-            '''
-            # *------------------------------------------------------------------
-            # * Location - Formato: 'L_' + SiteID
-            # *------------------------------------------------------------------
-            '''
-            # Damos de alta la Location - OK
             temp = cspaxl_Location.Add(logger, service, row)
 
             # Device Pool
-            '''
-            # *------------------------------------------------------------------
-            # * Device Pool - Formato: 'DP_' + SiteID + '_ORANGE'
-            # *------------------------------------------------------------------
-            '''
-            # Damos el Device Pool - OK
             temp = cspaxl_DevicePool.Add(logger, service, row)
 
             # Call Pick Up Group
-            '''
-            # *------------------------------------------------------------------
-            # * Call Pick Up Group - Formato: 'L_' + SiteID
-            # *------------------------------------------------------------------
-            '''
-            # Damos de alta la Location
-            #temp = cspaxl_Location.Add(logger, service, row)
+            temp = cspaxl_CallPickupGroup.Add(logger, service, row)
 
-
+            # Line
+            #temp = cspaxl_Line.Add(logger, service, row)
 
 # Main Function
 if __name__=='__main__':
