@@ -228,31 +228,39 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
         add_status = PrettyTable(['SiteID', 'UserFirstName', 'UserSurname', 'UserId', 'DirectoryNumber', 'ToIPModel', 'MACAddress', 'DID', 'CallingSearchSpace', 'VoiceMail', 'Locale'])
         for row in file_reader:
             # Borramos los espacios que puedan tener
-            row['SiteID']             = row['SiteID'].strip()
-            row['UserFirstName']      = row['UserFirstName'].strip()
-            row['UserSurname']        = row['UserSurname'].strip()
-            row['DirectoryNumber']    = row['DirectoryNumber'].strip()
-            row['ToIPModel']          = row['ToIPModel'].strip()
-            row['MACAddress']         = row['MACAddress'].strip()
-            row['DID']                = row['DID'].strip()
-            row['CallingSearchSpace'] = row['CallingSearchSpace'].strip()
-            row['VoiceMail']          = row['VoiceMail'].strip()
-            row['Locale']             = row['Locale'].strip()
+            row['SiteID']              = row['SiteID'].strip()
+            row['UserFirstName']       = row['UserFirstName'].strip()
+            row['UserSurname']         = row['UserSurname'].strip()
+            row['DirectoryNumber']     = row['DirectoryNumber'].strip()
+            row['routePartitionName']  = 'P_Internas'
+            row['callPickupGroupName'] = 'CPG_OF' + row['SiteID'].strip()
+            row['ToIPModel']           = row['ToIPModel'].strip()
+            row['MACAddress']          = row['MACAddress'].strip()
+            row['DID']                 = row['DID'].strip()
+            row['CallingSearchSpace']  = row['CallingSearchSpace'].strip()
+            row['CSSForward']          = row['CallingSearchSpace'].strip()
+            row['VoiceMail']           = row['VoiceMail'].strip()
+            row['Locale']              = row['Locale'].strip()
             
+            if row['VoiceMail'] == 'YES':
+                row['voiceMailProfileName'] = 'CAIXABANK_VMENABLED'
+            else:
+                row['voiceMailProfileName'] = 'NoVoiceMail'
+
             # Region
-            temp = cspaxl_Region.Add(logger, service, row)
+            #temp = cspaxl_Region.Add(logger, service, row)
 
             # Location
-            temp = cspaxl_Location.Add(logger, service, row)
+            #temp = cspaxl_Location.Add(logger, service, row)
 
             # Device Pool
-            temp = cspaxl_DevicePool.Add(logger, service, row)
+            #temp = cspaxl_DevicePool.Add(logger, service, row)
 
             # Call Pick Up Group
-            temp = cspaxl_CallPickupGroup.Add(logger, service, row)
+            #temp = cspaxl_CallPickupGroup.Add(logger, service, row)
 
             # Line
-            #temp = cspaxl_Line.Add(logger, service, row)
+            temp = cspaxl_Line.Add(logger, service, row)
 
 # Main Function
 if __name__=='__main__':

@@ -61,7 +61,7 @@ def Add(logger,csp_soap_client,cucm_variable_axl):
     axl_cucm = {}
     axl_cucm['pattern'] = '#' + cucm_variable_axl['SiteID']
     axl_cucm['name'] = 'CPG_OF' + cucm_variable_axl['SiteID']
-    axl_cucm['routePartitionName'] = 'P_Internas'
+    axl_cucm['routePartitionName'] = cucm_variable_axl['routePartitionName']
     
     # Limitamos el numero de caracteres de las variables
     axl_cucm['pattern'] = axl_cucm['pattern'][:50]
