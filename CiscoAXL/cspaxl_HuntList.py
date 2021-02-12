@@ -57,31 +57,33 @@ def Add(logger,csp_soap_client,cucm_variable_axl):
     # *
 
     # Mandatory (name,dateTimeSettingName, callManagerGroupName, regionName, srstName, aarNeighborhoodName, location)
-    logger.debug('Se ha entrado en la funcion Add del archivo cspaxl_DevicePool.py')
+    logger.debug('Se ha entrado en la funcion Add del archivo cspaxl_LineGroup.py')
     axl_cucm = {}
-    axl_cucm['name'] = 'DP_' + cucm_variable_axl['SiteID'] + '_ORANGE'
-    axl_cucm['dateTimeSettingName'] = 'DTG_Spain'
+    axl_cucm['name']                 = 'HL_OF' + cucm_variable_axl['SiteID']
+    axl_cucm['description']          = 'GENERICO OFICINA ' + cucm_variable_axl['SiteID']
     axl_cucm['callManagerGroupName'] = cucm_variable_axl['callManagerGroupName']
-    axl_cucm['regionName'] = 'R_' + cucm_variable_axl['SiteID']
-    axl_cucm['srstName'] = 'Disable'
-    axl_cucm['locationName'] = 'L_' + cucm_variable_axl['SiteID']
+    axl_cucm['routeListEnabled']     = 'True'
     
+    # Definimos los miembros del Hunt List
+    axl_cucm_member = {}
+    axl_cucm_member['selectionOrder'] = 1 
+    axl_cucm_member['lineGroupName'] = 'LG_OF' + cucm_variable_axl['SiteID']
+
+    axl_cucm['members']     = {'member': axl_cucm_member}
+
     # Limitamos el numero de caracteres de las variables
-    axl_cucm['name'] = axl_cucm['name'][:50]
-    axl_cucm['regionName'] = axl_cucm['regionName'][:50]
-    axl_cucm['locationName'] = axl_cucm['locationName'][:50]
 
     # Damos de alta el Device Pool
     try:
-        result = csp_soap_client.addDevicePool(axl_cucm)
+        result = csp_soap_client.addHuntList(axl_cucm)
     except:
         logger.debug(sys.exc_info())
         logger.error('%s' % (sys.exc_info()[1]))
         return {'Status': False, 'Detail': sys.exc_info()[1]}
     else:
-        csp_table = PrettyTable(['UUID','Device Pool'])
+        csp_table = PrettyTable(['UUID','Hunt List'])
         csp_table.add_row([result['return'][:],axl_cucm['name'] ])
-        csp_table_response = csp_table.get_string(fields=['UUID','Device Pool'], sortby="UUID").encode('latin-1')
+        csp_table_response = csp_table.get_string(fields=['UUID','Hunt List'], sortby="UUID").encode('latin-1')
         logger.info('Result:\n%s' % (csp_table_response.decode("utf-8")))
         return {'Status':True,'Detail':csp_table_response}
 
@@ -107,10 +109,10 @@ def Get(logger,csp_soap_client,cucm_variable_axl):
     # *------------------------------------------------------------------
     # *
 
-    # Mandatory (pattern,usage,routePartitionName)
-    logger.debug('Se ha entrado en la funcion Get del archivo cspaxl_DevicePool.py')
+    # Mandatory (name)
+    logger.debug('Se ha entrado en la funcion Get del archivo cspaxl_LineGroup.py')
     try:
-        result = csp_soap_client.getDevicePool(name='DP_'+cucm_variable_axl['SiteID']+'_ORANGE')
+        result = csp_soap_client.getHuntList(name='HL_OF'+cucm_variable_axl['SiteID'])
     except:
         logger.debug(sys.exc_info())
         logger.error(sys.exc_info()[1])

@@ -228,19 +228,20 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
         add_status = PrettyTable(['SiteID', 'UserFirstName', 'UserSurname', 'UserId', 'DirectoryNumber', 'ToIPModel', 'MACAddress', 'DID', 'CallingSearchSpace', 'VoiceMail', 'Locale'])
         for row in file_reader:
             # Borramos los espacios que puedan tener
-            row['SiteID']              = row['SiteID'].strip()
-            row['UserFirstName']       = row['UserFirstName'].strip()
-            row['UserSurname']         = row['UserSurname'].strip()
-            row['DirectoryNumber']     = row['DirectoryNumber'].strip()
-            row['routePartitionName']  = 'P_Internas'
-            row['callPickupGroupName'] = 'CPG_OF' + row['SiteID'].strip()
-            row['ToIPModel']           = row['ToIPModel'].strip()
-            row['MACAddress']          = row['MACAddress'].strip()
-            row['DID']                 = row['DID'].strip()
-            row['CallingSearchSpace']  = row['CallingSearchSpace'].strip()
-            row['CSSForward']          = row['CallingSearchSpace'].strip()
-            row['VoiceMail']           = row['VoiceMail'].strip()
-            row['Locale']              = row['Locale'].strip()
+            row['SiteID']               = row['SiteID'].strip()
+            row['UserFirstName']        = row['UserFirstName'].strip()
+            row['UserSurname']          = row['UserSurname'].strip()
+            row['DirectoryNumber']      = row['DirectoryNumber'].strip()
+            row['routePartitionName']   = 'P_Internas'
+            row['callPickupGroupName']  = 'CPG_OF' + row['SiteID'].strip()
+            row['ToIPModel']            = row['ToIPModel'].strip()
+            row['MACAddress']           = row['MACAddress'].strip()
+            row['DID']                  = row['DID'].strip()
+            row['CallingSearchSpace']   = row['CallingSearchSpace'].strip()
+            row['CSSForward']           = row['CallingSearchSpace'].strip()
+            row['VoiceMail']            = row['VoiceMail'].strip()
+            row['Locale']               = row['Locale'].strip()
+            row['callManagerGroupName'] = 'CMG_Sub21CD1Sub06CD2'
             
             if row['VoiceMail'] == 'YES':
                 row['voiceMailProfileName'] = 'CAIXABANK_VMENABLED'
@@ -264,6 +265,9 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
 
             # Line Group
             temp = cspaxl_LineGroup.Add(logger, service, row)
+
+            # Hunt List
+            temp = cspaxl_HuntList.Add(logger, service, row)
 
 # Main Function
 if __name__=='__main__':
