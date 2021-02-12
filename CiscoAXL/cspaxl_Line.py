@@ -60,7 +60,7 @@ def String2ASCI (logger,text):
 
     text = re.sub(r"([^n\u0300-\u036f]|)[\u0300-\u036f]+", r"\1", normalize( "NFD", text), 0, re.I)
     text = normalize( 'NFC', text)
-    logger.info('Texto ASCII: %s' % (text))
+    logger.debug('Texto ASCII: %s' % (text))
     return (text)
 
 def Add(logger,csp_soap_client,cucm_variable_axl):
@@ -122,7 +122,6 @@ def Add(logger,csp_soap_client,cucm_variable_axl):
     #axl_cucm['parkMonForwardNoRetrieveIntDn'] = axl_cucm['parkMonForwardNoRetrieveIntDn'][:50]
 
     # Damos de alta la Linea
-    logger.info(axl_cucm)
     try:
         result = csp_soap_client.addLine(axl_cucm)
     except:
@@ -134,6 +133,7 @@ def Add(logger,csp_soap_client,cucm_variable_axl):
         csp_table.add_row([result['return'][:], axl_cucm['pattern'], axl_cucm['routePartitionName']])
         csp_table_response = csp_table.get_string(fields=['UUID', 'pattern', 'routePartitionName'],
                                                   sortby="UUID").encode('latin-1')
+        logger.info('Result:\n%s' % (csp_table_response.decode("utf-8")))
         return {'Status': True,'Detail':csp_table_response}
 
 def Get(logger,csp_soap_client,cucm_variable_axl):
