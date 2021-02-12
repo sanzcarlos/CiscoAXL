@@ -222,18 +222,16 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
         logger.info('Se ha abierto el archivo %s' % (csv_config_file))
 
         field_names = (
-            'SiteID', 'UserFirstName', 'UserSurname', 'UserId', 'DirectoryNumber', 'ToIPModel', 'MACAddress', 'DID', 'CallingSearchSpace', 'VoiceMail', 'Locale' )
+            'SiteID', 'UserFirstName', 'UserSurname', 'UserId', 'DirectoryNumber', 'routePartitionName' , 'ToIPModel', 'MACAddress', 'DID', 'CallingSearchSpace', 'VoiceMail', 'Locale' )
         file_reader = csv.DictReader(csv_file, field_names)
 
-        add_status = PrettyTable(['SiteID', 'UserFirstName', 'UserSurname', 'UserId', 'DirectoryNumber', 'ToIPModel', 'MACAddress', 'DID', 'CallingSearchSpace', 'VoiceMail', 'Locale'])
+        add_status = PrettyTable(['SiteID', 'UserFirstName', 'UserSurname', 'UserId', 'DirectoryNumber', 'routePartitionName' , 'ToIPModel', 'MACAddress', 'DID', 'CallingSearchSpace', 'VoiceMail', 'Locale'])
         for row in file_reader:
-            # Borramos los espacios que puedan tener
+            # Borramos los espacios al principio y final que puedan tener
             row['SiteID']               = row['SiteID'].strip()
             row['UserFirstName']        = row['UserFirstName'].strip()
             row['UserSurname']          = row['UserSurname'].strip()
             row['DirectoryNumber']      = row['DirectoryNumber'].strip()
-            row['routePartitionName']   = 'P_Internas'
-            row['callPickupGroupName']  = 'CPG_OF' + row['SiteID'].strip()
             row['ToIPModel']            = row['ToIPModel'].strip()
             row['MACAddress']           = row['MACAddress'].strip()
             row['DID']                  = row['DID'].strip()
@@ -241,6 +239,12 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
             row['CSSForward']           = row['CallingSearchSpace'].strip()
             row['VoiceMail']            = row['VoiceMail'].strip()
             row['Locale']               = row['Locale'].strip()
+            row['routePartitionName']   = row['routePartitionName'].strip()
+            # Si no incluimos una Partition ponemos una por defecto
+            if row['routePartitionName'] == '':
+                row['routePartitionName'] = 'P_Internas'
+
+            row['callPickupGroupName']  = 'CPG_OF' + row['SiteID'].strip()
             row['callManagerGroupName'] = 'CMG_Sub21CD1Sub06CD2'
             
             if row['VoiceMail'] == 'YES':
@@ -261,13 +265,33 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
             temp = cspaxl_CallPickupGroup.Add(logger, service, row)
 
             # Line
-            temp = cspaxl_Line.Add(logger, service, row)
+            # Comprobamos si tenemos un Directory Number
+            if row['DirectoryNumber'] == '':
+                logger.error('No tenemos Directory Number y no podemos continuar en el actual registro')
+                continue
+            # Comprobamos el numero de Directory Numbers que han puesto - El separador es |
+            if len(row['DirectoryNumber'].split('|')) == 1:
+                logger.info('Tenemos que dar de alta un Directory Number')
+                temp = cspaxl_Line.Add(logger, service, row)
+            else:
+                logger.info('Tenemos que dar de alta varios Directory Number:: %s' % (row['DirectoryNumber'].split('|')))
+                row_temp = row
+                DN = row['DirectoryNumber'].split('|')
+                Partiton = row['routePartitionName'].split('|')
+                for x in range(0,len(DN)):
+                    logger.info('Vamos a dar de alta el siguiente Directory Number: %s' % (DN[x]))
+                    row_temp['DirectoryNumber']    = DN[x]
+                    row_temp['routePartitionName'] = Partiton[x]
+                    temp = cspaxl_Line.Add(logger, service, row_temp)
 
             # Line Group
             temp = cspaxl_LineGroup.Add(logger, service, row)
 
             # Hunt List
             temp = cspaxl_HuntList.Add(logger, service, row)
+
+            # Hunt Pilot
+            temp = cspaxl_HuntPilot.Add(logger, service, row)
 
 # Main Function
 if __name__=='__main__':
