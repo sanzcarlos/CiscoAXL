@@ -248,19 +248,22 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
                 row['voiceMailProfileName'] = 'NoVoiceMail'
 
             # Region
-            #temp = cspaxl_Region.Add(logger, service, row)
+            temp = cspaxl_Region.Add(logger, service, row)
 
             # Location
-            #temp = cspaxl_Location.Add(logger, service, row)
+            temp = cspaxl_Location.Add(logger, service, row)
 
             # Device Pool
-            #temp = cspaxl_DevicePool.Add(logger, service, row)
+            temp = cspaxl_DevicePool.Add(logger, service, row)
 
             # Call Pick Up Group
-            #temp = cspaxl_CallPickupGroup.Add(logger, service, row)
+            temp = cspaxl_CallPickupGroup.Add(logger, service, row)
 
             # Line
             temp = cspaxl_Line.Add(logger, service, row)
+
+            # Line Group
+            temp = cspaxl_LineGroup.Add(logger, service, row)
 
 # Main Function
 if __name__=='__main__':

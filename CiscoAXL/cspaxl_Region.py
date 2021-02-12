@@ -74,9 +74,9 @@ def Add(logger, csp_soap_client, cucm_variable_axl):
         logger.error('%s' % (sys.exc_info()[1]))
         return {'Status': False, 'Detail': sys.exc_info()[1]}
     else:
-        csp_table = PrettyTable(['UUID','name'])
+        csp_table = PrettyTable(['UUID','Region'])
         csp_table.add_row([result['return'][:], axl_cucm['name']])
-        csp_table_response = csp_table.get_string(fields=['UUID', 'name'],
+        csp_table_response = csp_table.get_string(fields=['UUID', 'Region'],
                                                   sortby="UUID").encode('latin-1')
         logger.info('Result:\n%s' % (csp_table_response.decode("utf-8")))
         return {'Status':True,'Detail':csp_table_response}
