@@ -90,7 +90,6 @@ def Add(logger,csp_soap_client,cucm_variable_axl):
     axl_cucm = {}
     axl_cucm['pattern']                  = '8' + cucm_variable_axl['SiteID'] + '00'
     axl_cucm['description']              = 'HL_OF' + cucm_variable_axl['SiteID']
-    axl_cucm['routePartitionName']       = cucm_variable_axl['routePartitionName']
     axl_cucm['blockEnable']              = 'false'
     axl_cucm['useCallingPartyPhoneMask'] = 'Off'
     axl_cucm['provideOutsideDialtone']   = 'false'
@@ -98,6 +97,14 @@ def Add(logger,csp_soap_client,cucm_variable_axl):
     axl_cucm['asciiAlertingName']        = 'GENERICO OFICINA ' + cucm_variable_axl['SiteID']
     axl_cucm['maxHuntduration']          = '20'
     axl_cucm['huntListName']             = 'HL_OF' + cucm_variable_axl['SiteID']
+
+    if len(cucm_variable_axl['routePartitionName'].split('|')) == 1:
+        logger.info('Tenemos una sola Partition en el registro')
+        axl_cucm['routePartitionName'] = cucm_variable_axl['routePartitionName']
+    else:
+        logger.info('Tenemos mas de una Partition en el registro')
+        P = cucm_variable_axl['routePartitionName'].split('|')
+        axl_cucm['routePartitionName'] = P[0]
 
     # Definimos los miembros del Hunt List
     axl_cucm_member = {}

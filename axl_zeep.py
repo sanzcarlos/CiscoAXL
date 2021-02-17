@@ -222,10 +222,10 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
         logger.info('Se ha abierto el archivo %s' % (csv_config_file))
 
         field_names = (
-            'SiteID', 'UserFirstName', 'UserSurname', 'UserId', 'DirectoryNumber', 'routePartitionName' , 'ToIPModel', 'MACAddress', 'DID', 'CallingSearchSpace', 'VoiceMail', 'Locale' )
+            'SiteID', 'UserFirstName', 'UserSurname', 'UserId', 'DirectoryNumber', 'routePartitionName' , 'ToIPModel', 'MACAddress', 'DID', 'CallingSearchSpace', 'VoiceMail', 'Locale', 'SD_Number', 'SD_Label' )
         file_reader = csv.DictReader(csv_file, field_names)
 
-        add_status = PrettyTable(['SiteID', 'UserFirstName', 'UserSurname', 'UserId', 'DirectoryNumber', 'routePartitionName' , 'ToIPModel', 'MACAddress', 'DID', 'CallingSearchSpace', 'VoiceMail', 'Locale'])
+        add_status = PrettyTable(['SiteID', 'UserFirstName', 'UserSurname', 'UserId', 'DirectoryNumber', 'routePartitionName' , 'ToIPModel', 'MACAddress', 'DID', 'CallingSearchSpace', 'VoiceMail', 'Locale', 'SD_Number', 'SD_Label'])
         for row in file_reader:
             # Borramos los espacios al principio y final que puedan tener
             row['SiteID']               = row['SiteID'].strip()
@@ -240,6 +240,8 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
             row['VoiceMail']            = row['VoiceMail'].strip()
             row['Locale']               = row['Locale'].strip()
             row['routePartitionName']   = row['routePartitionName'].strip()
+            row['SD_Number']            = row['SD_Number'].strip()
+            row['SD_Label']             = row['SD_Label'].strip()
             # Si no incluimos una Partition ponemos una por defecto
             if row['routePartitionName'] == '':
                 row['routePartitionName'] = 'P_Internas'
@@ -264,6 +266,15 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
             # Call Pick Up Group
             temp = cspaxl_CallPickupGroup.Add(logger, service, row)
 
+            # Line Group
+            temp = cspaxl_LineGroup.Add(logger, service, row)
+
+            # Hunt List
+            temp = cspaxl_HuntList.Add(logger, service, row)
+
+            # Hunt Pilot
+            temp = cspaxl_HuntPilot.Add(logger, service, row)
+
             # Line
             # Comprobamos si tenemos un Directory Number
             if row['DirectoryNumber'] == '':
@@ -275,7 +286,7 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
                 temp = cspaxl_Line.Add(logger, service, row)
             else:
                 logger.info('Tenemos que dar de alta varios Directory Number:: %s' % (row['DirectoryNumber'].split('|')))
-                row_temp = row
+                row_temp = row.copy()
                 DN = row['DirectoryNumber'].split('|')
                 Partiton = row['routePartitionName'].split('|')
                 for x in range(0,len(DN)):
@@ -284,14 +295,8 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
                     row_temp['routePartitionName'] = Partiton[x]
                     temp = cspaxl_Line.Add(logger, service, row_temp)
 
-            # Line Group
-            temp = cspaxl_LineGroup.Add(logger, service, row)
-
-            # Hunt List
-            temp = cspaxl_HuntList.Add(logger, service, row)
-
-            # Hunt Pilot
-            temp = cspaxl_HuntPilot.Add(logger, service, row)
+            # Device
+            temp = cspaxl_Phone.Add(logger, service, row)
 
 # Main Function
 if __name__=='__main__':

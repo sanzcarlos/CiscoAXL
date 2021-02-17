@@ -61,7 +61,13 @@ def Add(logger,csp_soap_client,cucm_variable_axl):
     axl_cucm = {}
     axl_cucm['pattern'] = '#' + cucm_variable_axl['SiteID']
     axl_cucm['name'] = 'CPG_OF' + cucm_variable_axl['SiteID']
-    axl_cucm['routePartitionName'] = cucm_variable_axl['routePartitionName']
+    if len(cucm_variable_axl['routePartitionName'].split('|')) == 1:
+        logger.info('Tenemos una sola Partition en el registro')
+        axl_cucm['routePartitionName'] = cucm_variable_axl['routePartitionName']
+    else:
+        logger.info('Tenemos mas de una Partition en el registro')
+        P = cucm_variable_axl['routePartitionName'].split('|')
+        axl_cucm['routePartitionName'] = P[0]
     
     # Limitamos el numero de caracteres de las variables
     axl_cucm['pattern'] = axl_cucm['pattern'][:50]

@@ -1,0 +1,74 @@
+2021-02-17 02:56:59 | axl_zeep.py       :321  | INFO      | Estamos usando Python v3.7.3
+2021-02-17 02:56:59 | axl_zeep.py       :88   | INFO      | Ha seleccionado el fichero de configuracion: conf/NTT-Staging.cfg
+2021-02-17 02:56:59 | axl_zeep.py       :93   | INFO      | Ha seleccionado el fichero de carga masiva: csv/0011.csv
+2021-02-17 02:56:59 | axl_zeep.py       :328  | INFO      | Se ha seleccionado el cliente: NTT STAGING
+2021-02-17 02:57:01 | axl_zeep.py       :199  | INFO      | Se ha creado el cliente SOAP.
+2021-02-17 02:57:01 | axl_zeep.py       :222  | INFO      | Se ha abierto el archivo csv/0011.csv
+2021-02-17 02:57:02 | cspaxl_Region.py  :81   | INFO      | Result:
++----------------------------------------+--------+
+|                  UUID                  | Region |
++----------------------------------------+--------+
+| {C2B8AC1E-30C4-9DAD-36F5-AEA2A64EBFCA} | R_0011 |
++----------------------------------------+--------+
+2021-02-17 02:57:02 | cspaxl_Location.py:81   | INFO      | Result:
++----------------------------------------+----------+
+|                  UUID                  | Location |
++----------------------------------------+----------+
+| {3DF4E2B3-12EC-8650-8E7A-E13C2DE80C7E} |  L_0011  |
++----------------------------------------+----------+
+2021-02-17 02:57:03 | cspaxl_DevicePool.py:85   | INFO      | Result:
++----------------------------------------+----------------+
+|                  UUID                  |  Device Pool   |
++----------------------------------------+----------------+
+| {0CE07A0E-8869-BB08-757F-C35ADE009267} | DP_0011_ORANGE |
++----------------------------------------+----------------+
+2021-02-17 02:57:03 | cspaxl_CallPickupGroup.py:68   | INFO      | Tenemos mas de una Partition en el registro
+2021-02-17 02:57:03 | cspaxl_CallPickupGroup.py:87   | INFO      | Result:
++----------------------------------------+-------------------+
+|                  UUID                  | Call Pickup Group |
++----------------------------------------+-------------------+
+| {36653BBD-3DF3-46D5-6BB9-284090B63082} |     CPG_OF0011    |
++----------------------------------------+-------------------+
+2021-02-17 02:57:03 | cspaxl_LineGroup.py:82   | INFO      | Result:
++----------------------------------------+------------+
+|                  UUID                  | Line Group |
++----------------------------------------+------------+
+| {3822461E-CCED-BFA7-B55B-EA9C5DEB6BF5} | LG_OF0011  |
++----------------------------------------+------------+
+2021-02-17 02:57:04 | cspaxl_HuntList.py:87   | INFO      | Result:
++----------------------------------------+-----------+
+|                  UUID                  | Hunt List |
++----------------------------------------+-----------+
+| {A50DBD7E-CDB9-4889-86E1-480E82B3BCE2} | HL_OF0011 |
++----------------------------------------+-----------+
+2021-02-17 02:57:04 | cspaxl_HuntPilot.py:105  | INFO      | Tenemos mas de una Partition en el registro
+2021-02-17 02:57:04 | cspaxl_HuntPilot.py:131  | INFO      | Result:
++----------------------------------------+------------+
+|                  UUID                  | Hunt Pilot |
++----------------------------------------+------------+
+| {8C51D37D-100F-7066-FBAB-BA6A3BF396CF} |  8001100   |
++----------------------------------------+------------+
+2021-02-17 02:57:04 | axl_zeep.py       :288  | INFO      | Tenemos que dar de alta varios Directory Number:: ['6001102', '6001181']
+2021-02-17 02:57:04 | axl_zeep.py       :293  | INFO      | Vamos a dar de alta el siguiente Directory Number: 6001102
+2021-02-17 02:57:04 | cspaxl_Line.py    :134  | INFO      | Result:
++----------------------------------------+------------------+--------------------+
+|                  UUID                  | Directory Number | routePartitionName |
++----------------------------------------+------------------+--------------------+
+| {9FC4E3E8-870A-ECEA-B988-607C3761ED00} |     6001102      |     P_Internas     |
++----------------------------------------+------------------+--------------------+
+2021-02-17 02:57:04 | axl_zeep.py       :293  | INFO      | Vamos a dar de alta el siguiente Directory Number: 6001181
+2021-02-17 02:57:05 | cspaxl_Line.py    :134  | INFO      | Result:
++----------------------------------------+------------------+--------------------+
+|                  UUID                  | Directory Number | routePartitionName |
++----------------------------------------+------------------+--------------------+
+| {A750996B-02D2-027B-A0DF-3146762DB4A5} |     6001181      |   P_LG_Oficinas    |
++----------------------------------------+------------------+--------------------+
+2021-02-17 02:57:05 | cspaxl_Phone.py   :172  | INFO      | Tenemos que configurar Speed Dials
+2021-02-17 02:57:05 | cspaxl_Phone.py   :198  | INFO      | El telefono SEPF0082F1B738C no existe en el CUCM
+2021-02-17 02:57:05 | cspaxl_Phone.py   :214  | INFO      | Result:
++----------------------------------------+-----------------+-------------------+
+|                  UUID                  |   Device Name   |    description    |
++----------------------------------------+-----------------+-------------------+
+| {8AC07272-BC1D-48C4-8C90-AD073428D5BB} | SEPF0082F1B738C | Carlos Sanz Penas |
++----------------------------------------+-----------------+-------------------+
+2021-02-17 02:57:05 | axl_zeep.py       :334  | INFO      | Se cerrara el programa

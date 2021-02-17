@@ -24,7 +24,6 @@
 # *
 
 # Import Modules
-# Import Modules
 import sys
 import os
 import suds
