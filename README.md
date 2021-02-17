@@ -32,3 +32,51 @@ Instalamos los paquetes que necesitamos para poder ejecutar nuestro script
 ```
 pip install -r requirements.txt
 ```
+
+## Fichero Configuración
+Tenemos que crearnos un fichero para cada uno los cluster que queramos utilizar con nuestro script, el formato del archivo tiene que ser:
+
+```
+# Credenciales del servicio de LDAP
+[INFO]
+customer = Template
+[LDAP]
+name = "Template"
+server = 
+user = 
+password = 
+search_base = 
+[CUCM]
+server = 
+user = 
+pass = 
+version = 
+[CUC]
+server =
+user = 
+pass = 
+version =  
+[CUP]
+server =
+user = 
+pass = 
+version =  
+[UCCX]
+server =
+user = 
+pass = 
+version =  
+[GMAIL]
+username = 
+from = 
+password = 
+smtpserver = 
+smtpport = 
+[SQL]
+server = 
+database = 
+user = 
+password = 
+```
+
+Los archivos se tienen que guardar en el directorio conf/
