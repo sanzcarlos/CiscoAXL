@@ -298,6 +298,9 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
             # Device
             temp = cspaxl_Phone.Add(logger, service, row)
 
+            # Translation Pattern
+            temp = cspaxl_TransPattern.Add(logger, service, row)
+
 # Main Function
 if __name__=='__main__':
     logging.basicConfig(level=logging.INFO,

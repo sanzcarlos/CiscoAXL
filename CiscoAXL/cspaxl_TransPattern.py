@@ -24,15 +24,12 @@
 # *
 
 # Import Modules
-# Import Modules
 import sys
 import os
 import suds
 import ssl
 
 from prettytable import PrettyTable
-#from configobj import ConfigObj
-#from suds.client import Client
 
 def Add(logger,csp_soap_client,cucm_variable_axl):
     # *------------------------------------------------------------------
@@ -57,48 +54,67 @@ def Add(logger,csp_soap_client,cucm_variable_axl):
     # *
 
     # Mandatory (pattern,usage,routePartitionName)
-    #axl_cucm_TransPattern = cucm_variable_axl
-    axl_cucm_TransPattern = {}
-    if cucm_variable_axl['Pattern'][0] == '+':
-        axl_cucm_TransPattern['pattern'] = '\\' + cucm_variable_axl['Pattern']
+    #axl_cucm = cucm_variable_axl
+    axl_cucm = {}
+    if cucm_variable_axl['DID'][0] == '+':
+        axl_cucm['pattern'] = '\\' + cucm_variable_axl['DID']
     else:
-        axl_cucm_TransPattern['pattern'] = cucm_variable_axl['Pattern']
-    axl_cucm_TransPattern['description'] = cucm_variable_axl['Pattern'] + ' - ' + cucm_variable_axl['CalledPartyTransformMask']
-    axl_cucm_TransPattern['calledPartyTransformationMask'] = cucm_variable_axl['CalledPartyTransformMask']
-    axl_cucm_TransPattern['callingSearchSpaceName'] = cucm_variable_axl['CSS']
-    axl_cucm_TransPattern['routePartitionName'] = cucm_variable_axl['Partition']
-    axl_cucm_TransPattern['usage'] = 'Translation'
-    axl_cucm_TransPattern['patternUrgency'] = 'true'
-    axl_cucm_TransPattern['provideOutsideDialtone'] = 'false'
+        axl_cucm['pattern'] = cucm_variable_axl['DID']
+    axl_cucm['description'] = 'DDI Entrante Oficina ' + cucm_variable_axl['SiteID'] + ' ORANGE'
+
+    if len(cucm_variable_axl['DirectoryNumber'].split('|')) == 1:
+        logger.info('Tenemos una solo Directory Number en el registro')
+        axl_cucm['calledPartyTransformationMask'] = cucm_variable_axl['DirectoryNumber']
+    else:
+        logger.info('Tenemos mas de un Directory Number en el registro')
+        DN = cucm_variable_axl['DirectoryNumber'].split('|')
+        axl_cucm['calledPartyTransformationMask'] = DN[0]
+
+
+    axl_cucm['callingSearchSpaceName'] = cucm_variable_axl['CallingSearchSpace']
+
+    if len(cucm_variable_axl['routePartitionName'].split('|')) == 1:
+        logger.info('Tenemos una sola Partition en el registro')
+        axl_cucm['routePartitionName'] = cucm_variable_axl['routePartitionName']
+    else:
+        logger.info('Tenemos mas de una Partition en el registro')
+        P = cucm_variable_axl['routePartitionName'].split('|')
+        axl_cucm['routePartitionName'] = P[0]
+
+    axl_cucm['usage'] = 'Translation'
+    axl_cucm['patternUrgency'] = 'true'
+    axl_cucm['provideOutsideDialtone'] = 'false'
 
     # Comprobamos que el Translation Pattern no existe
     try:
         csp_soap_returnedTags = {'pattern': '', 'routePartitionName': ''}
-        csp_soap_searchCriteria = {'pattern': cucm_variable_axl['Pattern'],'routePartitionName':cucm_variable_axl['Partition']}
-        result = csp_soap_client.service.listTransPattern(csp_soap_searchCriteria,csp_soap_returnedTags)
+        csp_soap_searchCriteria = {'pattern': axl_cucm['pattern'],'routePartitionName':axl_cucm['routePartitionName']}
+        result = csp_soap_client.listTransPattern(csp_soap_searchCriteria,csp_soap_returnedTags)
     except:
         logger.debug(sys.exc_info())
         logger.error(sys.exc_info()[1])
         return {'Status': False, 'Detail': result}
 
     else:
-        if (len(result['return']) == 0):
-            logger.info('El Translation Pattern %s en la Partition %s no existe en el CUCM' % (cucm_variable_axl['Pattern'],cucm_variable_axl['Partition']))
+        #if (len(result['return']) == 0):
+        if (result['return'] == None):
+            logger.info('El Translation Pattern %s en la Partition %s no existe en el CUCM' % (axl_cucm['pattern'],axl_cucm['routePartitionName']))
         else:
-            logger.info('El Translation Pattern %s en la Partition %s existe en el CUCM' % (cucm_variable_axl['Pattern'],cucm_variable_axl['Partition']))
+            logger.info('El Translation Pattern %s en la Partition %s existe en el CUCM' % (axl_cucm['pattern'],axl_cucm['routePartitionName']))
             return {'Status': False, 'Detail': cucm_variable_axl['Pattern']}
 
     # Damos de alta el Translation Pattern
     try:
-        result = csp_soap_client.service.addTransPattern(axl_cucm_TransPattern)
+        result = csp_soap_client.addTransPattern(axl_cucm)
     except:
         logger.debug(sys.exc_info())
         logger.error(sys.exc_info()[1])
         return {'Status': False, 'Detail': sys.exc_info()[1]}
     else:
         csp_table = PrettyTable(['UUID','pattern','routePartitionName'])
-        csp_table.add_row([result['return'][:],axl_cucm_TransPattern['pattern'], axl_cucm_TransPattern['routePartitionName'] ])
+        csp_table.add_row([result['return'][:],axl_cucm['pattern'], axl_cucm['routePartitionName'] ])
         csp_table_response = csp_table.get_string(fields=['UUID','pattern','routePartitionName'], sortby="UUID").encode('latin-1')
+        logger.info('Result:\n%s' % (csp_table_response.decode("utf-8")))
         return {'Status': True,'Detail':csp_table_response}
 
 def Get(logger,csp_soap_client,cucm_variable_axl):
@@ -126,7 +142,7 @@ def Get(logger,csp_soap_client,cucm_variable_axl):
     # Mandatory (pattern,usage,routePartitionName)
     try:
         #result = csp_soap_client.service.getTransPattern(pattern='',cucm_variable_axl)
-        result = csp_soap_client.service.getTransPattern({'uuid': 'a7bacb02-b820-85a9-ca53-6bbfce94c9c9'})
+        result = csp_soap_client.getTransPattern({'uuid': 'a7bacb02-b820-85a9-ca53-6bbfce94c9c9'})
         #result = csp_soap_client.service.getTransPattern(pattern='17150',routePartitionName='INTERNA')
     except:
         logger.debug(sys.exc_info())
