@@ -150,7 +150,7 @@ def client_soap(config_file):
 
     if platform.system() == 'Windows':
         logger.debug('El sistema operativo es: %s' % (platform.system()))
-        wsdl = 'file://' + os.getcwd().replace ("\\","//") + '//Schema//CUCM//' + csp_version + '//AXLAPI.wsdl'
+        wsdl = 'file:////' + os.getcwd().replace ("\\","//") + '//Schema//CUCM//' + csp_version + '//AXLAPI.wsdl'
     else:
         logger.debug('El sistema operativo es: %s' % (platform.system()))
         wsdl = 'file://' + os.getcwd() + '/Schema/CUCM/' + csp_version + '/AXLAPI.wsdl'
@@ -248,6 +248,7 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
 
             row['callPickupGroupName']  = 'CPG_OF' + row['SiteID'].strip()
             row['callManagerGroupName'] = 'CMG_Sub21CD1Sub06CD2'
+            row['dateTimeSettingName'] = 'GT_Spain'
             
             if row['VoiceMail'] == 'YES':
                 row['voiceMailProfileName'] = 'CAIXABANK_VMENABLED'
@@ -313,7 +314,7 @@ if __name__=='__main__':
     element_config_file = None
     history = None
     logger = logging.getLogger('cisco.cucm.axl.zeep')
-    logger.setLevel(logging.INFO)
+    logger.setLevel(logging.DEBUG)
 
     console = logging.StreamHandler()
     formatter = logging.Formatter('%(asctime)-18s | %(filename)-18s:%(lineno)-4s | %(levelname)-9s | %(message)s', datefmt='%Y-%m-%d %H:%M:%S')

@@ -60,7 +60,7 @@ def Add(logger,csp_soap_client,cucm_variable_axl):
     logger.debug('Se ha entrado en la funcion Add del archivo cspaxl_DevicePool.py')
     axl_cucm = {}
     axl_cucm['name'] = 'DP_' + cucm_variable_axl['SiteID'] + '_ORANGE'
-    axl_cucm['dateTimeSettingName'] = 'DTG_Spain'
+    axl_cucm['dateTimeSettingName'] = cucm_variable_axl['dateTimeSettingName']
     axl_cucm['callManagerGroupName'] = cucm_variable_axl['callManagerGroupName']
     axl_cucm['regionName'] = 'R_' + cucm_variable_axl['SiteID']
     axl_cucm['srstName'] = 'Disable'
