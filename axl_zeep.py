@@ -254,7 +254,7 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
                 row['voiceMailProfileName'] = 'CAIXABANK_VMENABLED'
             else:
                 row['voiceMailProfileName'] = 'NoVoiceMail'
-
+            
             # Region
             temp = cspaxl_Region.Add(logger, service, row)
 
@@ -295,7 +295,7 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
                     row_temp['DirectoryNumber']    = DN[x]
                     row_temp['routePartitionName'] = Partiton[x]
                     temp = cspaxl_Line.Add(logger, service, row_temp)
-
+            
             # Device
             temp = cspaxl_Phone.Add(logger, service, row)
 

@@ -202,6 +202,7 @@ def Add(logger,csp_soap_client,cucm_variable_axl):
             logger.info('El telefono %s existe en el CUCM' % (axl_cucm['name']))
             return {'Status': False, 'Detail': axl_cucm['name']}
     # Damos de alta el telefono
+    logger.debug('El telefono %s' % (axl_cucm))
     try:
         result = csp_soap_client.addPhone(axl_cucm)
     except:
