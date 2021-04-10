@@ -226,7 +226,7 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
             'SiteID', 'UserFirstName', 'UserSurname', 'UserId', 'DirectoryNumber', 'routePartitionName' , 'ToIPModel', 'MACAddress', 'DID', 'CallingSearchSpace', 'VoiceMail', 'Locale', 'SD_Number', 'SD_Label' )
         file_reader = csv.DictReader(csv_file, field_names)
 
-        add_status = PrettyTable(['SiteID', 'UserFirstName', 'UserSurname', 'UserId', 'DirectoryNumber', 'routePartitionName' , 'ToIPModel', 'MACAddress', 'DID', 'CallingSearchSpace', 'VoiceMail', 'Locale', 'SD_Number', 'SD_Label'])
+        #add_status = PrettyTable(['SiteID', 'UserFirstName', 'UserSurname', 'UserId', 'DirectoryNumber', 'routePartitionName' , 'ToIPModel', 'MACAddress', 'DID', 'CallingSearchSpace', 'VoiceMail', 'Locale', 'SD_Number', 'SD_Label'])
         for row in file_reader:
             # Borramos los espacios al principio y final que puedan tener
             row['SiteID']               = row['SiteID'].strip()
