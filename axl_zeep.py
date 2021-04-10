@@ -31,11 +31,12 @@ from requests.auth import HTTPBasicAuth
 
 from CiscoAXL import *
 
-from zeep import Client, Settings, Plugin, xsd
+#from zeep import Client, Settings, Plugin, xsd
+from zeep import Client, Settings, Plugin
 from zeep.transports import Transport
 from zeep.cache import SqliteCache
 from zeep.plugins import HistoryPlugin
-from zeep.exceptions import Fault
+#from zeep.exceptions import Fault
 from prettytable import PrettyTable
 from configobj import ConfigObj
 
@@ -49,7 +50,7 @@ import uuid
 import os
 import csv
 import urllib3
-import json
+#import json
 import pprint
 
 class PrettyLog():
@@ -256,25 +257,25 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
                 row['voiceMailProfileName'] = 'NoVoiceMail'
             
             # Region
-            temp = cspaxl_Region.Add(logger, service, row)
+            cspaxl_Region.Add(logger, service, row)
 
             # Location
-            temp = cspaxl_Location.Add(logger, service, row)
+            cspaxl_Location.Add(logger, service, row)
 
             # Device Pool
-            temp = cspaxl_DevicePool.Add(logger, service, row)
+            cspaxl_DevicePool.Add(logger, service, row)
 
             # Call Pick Up Group
-            temp = cspaxl_CallPickupGroup.Add(logger, service, row)
+            cspaxl_CallPickupGroup.Add(logger, service, row)
 
             # Line Group
-            temp = cspaxl_LineGroup.Add(logger, service, row)
+            cspaxl_LineGroup.Add(logger, service, row)
 
             # Hunt List
-            temp = cspaxl_HuntList.Add(logger, service, row)
+            cspaxl_HuntList.Add(logger, service, row)
 
             # Hunt Pilot
-            temp = cspaxl_HuntPilot.Add(logger, service, row)
+            cspaxl_HuntPilot.Add(logger, service, row)
 
             # Line
             # Comprobamos si tenemos un Directory Number
@@ -284,7 +285,7 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
             # Comprobamos el numero de Directory Numbers que han puesto - El separador es |
             if len(row['DirectoryNumber'].split('|')) == 1:
                 logger.info('Tenemos que dar de alta un Directory Number')
-                temp = cspaxl_Line.Add(logger, service, row)
+                cspaxl_Line.Add(logger, service, row)
             else:
                 logger.info('Tenemos que dar de alta varios Directory Number:: %s' % (row['DirectoryNumber'].split('|')))
                 row_temp = row.copy()
@@ -294,13 +295,13 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
                     logger.info('Vamos a dar de alta el siguiente Directory Number: %s' % (DN[x]))
                     row_temp['DirectoryNumber']    = DN[x]
                     row_temp['routePartitionName'] = Partiton[x]
-                    temp = cspaxl_Line.Add(logger, service, row_temp)
+                    cspaxl_Line.Add(logger, service, row_temp)
             
             # Device
-            temp = cspaxl_Phone.Add(logger, service, row)
+            cspaxl_Phone.Add(logger, service, row)
 
             # Translation Pattern
-            temp = cspaxl_TransPattern.Add(logger, service, row)
+            cspaxl_TransPattern.Add(logger, service, row)
 
 # Main Function
 if __name__=='__main__':

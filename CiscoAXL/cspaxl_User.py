@@ -106,21 +106,6 @@ def Add(logger,csp_soap_client,cucm_variable_axl):
         csp_table_response = csp_table.get_string(fields=['UUID','userid','firstName'], sortby="UUID").encode('latin-1')
         return {'Status': True,'Detail':csp_table_response}
 
-    '''
-    try:
-        result = csp_soap_client.service.addUser(axl_cucm_Line)
-    except:
-        logger.debug(sys.exc_info())
-        logger.error(sys.exc_info()[1])
-        return {'Status': False, 'Detail': sys.exc_info()[1]}
-    else:
-        csp_table = PrettyTable(['UUID','pattern','routePartitionName'])
-        csp_table.add_row([result['return'][:], axl_cucm_Line['pattern'], axl_cucm_Line['routePartitionName']])
-        csp_table_response = csp_table.get_string(fields=['UUID', 'pattern', 'routePartitionName'],
-                                                  sortby="UUID").encode('latin-1')
-        return {'Status':True,'Detail':csp_table_response}
-    '''
-
 def Get(logger,csp_soap_client,cucm_variable_axl):
     # *------------------------------------------------------------------
     # * function Get(logger,csp_soap_client,cucm_variable_axl)
