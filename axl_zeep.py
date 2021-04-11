@@ -256,6 +256,7 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
             else:
                 row['voiceMailProfileName'] = 'NoVoiceMail'
             
+            '''
             # Region
             cspaxl_Region.Add(logger, service, row)
 
@@ -302,6 +303,9 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
 
             # Translation Pattern
             cspaxl_TransPattern.Add(logger, service, row)
+            '''
+            # Add Line Group
+            cspaxl_LineGroup.Add(logger, service, row)
 
 # Main Function
 if __name__=='__main__':

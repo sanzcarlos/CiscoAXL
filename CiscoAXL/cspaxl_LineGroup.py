@@ -191,7 +191,7 @@ def Remove(logger,csp_soap_client,cucm_variable_axl):
         csp_table_response = csp_table.get_string(fields=['UUID','pattern','routePartitionName'], sortby="UUID").encode('latin-1')
         return {'Status':True,'Detail':csp_table_response}
 '''
-'''
+
 def Update(logger,csp_soap_client,cucm_variable_axl):
     # *------------------------------------------------------------------
     # * function Update(logger,csp_soap_client,cucm_variable_axl)
@@ -215,4 +215,4 @@ def Update(logger,csp_soap_client,cucm_variable_axl):
     # *
 
     # Mandatory (pattern,usage,routePartitionName)
-'''
+    logger.debug('Se ha entrado en la funcion Update del archivo cspaxl_LineGroup.py')
