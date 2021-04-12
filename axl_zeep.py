@@ -94,7 +94,7 @@ def parse_command_line(args):
             logger.info('Ha seleccionado el fichero de carga masiva: %s' % (csv_config_file))
 
     # No se ha pasado un fichero de configuracion como argumento del script
-    if(element_config_file==None):
+    if(element_config_file is None):
         logger.info(get_usage())
         csp_table_file=PrettyTable(['id', 'Filename'])
         csp_table_id=0
