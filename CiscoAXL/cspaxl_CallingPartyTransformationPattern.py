@@ -24,17 +24,8 @@
 # *
 
 # Import Modules
-# Import Modules
 import sys
-import os
-from unittest.case import _AssertRaisesContext
-
-import suds
-import ssl
-
 from prettytable import PrettyTable
-#from configobj import ConfigObj
-#from suds.client import Client
 
 def Add(logger,csp_soap_client,cucm_variable_axl):
     # *------------------------------------------------------------------

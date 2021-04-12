@@ -25,12 +25,8 @@
 
 # Import Modules
 import sys
-import os
-import suds
-import ssl
 import re
 from unicodedata import normalize
-from unittest.case import _AssertRaisesContext
 from prettytable import PrettyTable
 
 def String2ASCI (logger,text):

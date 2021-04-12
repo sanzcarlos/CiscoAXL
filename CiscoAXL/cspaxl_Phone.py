@@ -25,12 +25,8 @@
 
 # Import Modules
 import sys
-import os
-import suds
-import ssl
 import re
 from unicodedata import normalize
-from unittest.case import _AssertRaisesContext
 from prettytable import PrettyTable
 
 def String2ASCI (logger,text):
@@ -196,7 +192,7 @@ def Add(logger,csp_soap_client,cucm_variable_axl):
         return {'Status': False, 'Detail': sys.exc_info()[1]}
 
     else:
-        if (result['return'] == None):
+        if (result['return'] is None):
             logger.info('El telefono %s no existe en el CUCM' % (axl_cucm['name']))
         else:
             logger.info('El telefono %s existe en el CUCM' % (axl_cucm['name']))

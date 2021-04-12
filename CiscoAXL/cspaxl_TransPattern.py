@@ -25,10 +25,6 @@
 
 # Import Modules
 import sys
-import os
-import suds
-import ssl
-
 from prettytable import PrettyTable
 
 def Add(logger,csp_soap_client,cucm_variable_axl):
@@ -96,8 +92,7 @@ def Add(logger,csp_soap_client,cucm_variable_axl):
         return {'Status': False, 'Detail': result}
 
     else:
-        #if (len(result['return']) == 0):
-        if (result['return'] == None):
+        if (result['return'] is None):
             logger.info('El Translation Pattern %s en la Partition %s no existe en el CUCM' % (axl_cucm['pattern'],axl_cucm['routePartitionName']))
         else:
             logger.info('El Translation Pattern %s en la Partition %s existe en el CUCM' % (axl_cucm['pattern'],axl_cucm['routePartitionName']))
