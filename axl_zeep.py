@@ -305,7 +305,7 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
             cspaxl_TransPattern.Add(logger, service, row)
             '''
             # Add Line Group
-            cspaxl_LineGroup.Add(logger, service, row)
+            cspaxl_LineGroup.Update(logger, service, row)
 
 # Main Function
 if __name__=='__main__':
