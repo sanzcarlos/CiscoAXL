@@ -234,7 +234,6 @@ def Update(logger,csp_soap_client,cucm_variable_axl):
             logger.error(sys.exc_info()[1])
             return {'Status': False, 'Detail': sys.exc_info()[1]}
         else:
-            logger.info(result)
             csp_table = PrettyTable(['UUID','Line Group','Add Members'])
             csp_table.add_row([result['return'][:],'LG_OF' + cucm_variable_axl['SiteID'], cucm_variable_axl['DirectoryNumber'] +'/'+cucm_variable_axl['routePartitionName'] ])
             csp_table_response = csp_table.get_string(fields=['UUID','Line Group','Add Members'], sortby="UUID").encode('latin-1')
