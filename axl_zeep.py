@@ -31,12 +31,10 @@ from requests.auth import HTTPBasicAuth
 
 from CiscoAXL import *
 
-#from zeep import Client, Settings, Plugin, xsd
 from zeep import Client, Settings, Plugin
 from zeep.transports import Transport
 from zeep.cache import SqliteCache
 from zeep.plugins import HistoryPlugin
-#from zeep.exceptions import Fault
 from prettytable import PrettyTable
 from configobj import ConfigObj
 
