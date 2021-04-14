@@ -191,6 +191,10 @@ def client_soap(config_file):
                                 )
         service = csp_soap_client.create_service("{http://www.cisco.com/AXLAPIService/}AXLAPIBinding", csp_location)
 
+    except KeyboardInterrupt:
+        logger.error('KeyboardInterrupt: Se ha producido un error al crear el cliente soap')
+    except SystemExit:
+        logger.error('SystemExit: Se ha producido un error al crear el cliente soap')
     except:
         logger.error('Se ha producido un error al crear el cliente soap')
         logger.debug(sys.exc_info())
@@ -256,7 +260,7 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
             else:
                 row['voiceMailProfileName'] = 'NoVoiceMail'
             
-            '''
+
             # Region
             cspaxl_Region.Add(logger, service, row)
 
@@ -303,9 +307,22 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
 
             # Translation Pattern
             cspaxl_TransPattern.Add(logger, service, row)
-            '''
+
             # Add Line Group
-            cspaxl_LineGroup.Update(logger, service, row)
+            # Comprobamos el numero de Directory Numbers que han puesto - El separador es |
+            if len(row['DirectoryNumber'].split('|')) == 1:
+                logger.info('We do not have to add the Directory Number to the Line Group')
+            else:
+                logger.info('We have to add the Directory Number %s to the Line Group' % (row['DirectoryNumber'].split('|')))
+                row_temp = row.copy()
+                DN = row['DirectoryNumber'].split('|')
+                Partiton = row['routePartitionName'].split('|')
+                # Empezamos por el segundo elemento (1)
+                for x in range(1,len(DN)):
+                    logger.info('We have to add the Directory Number : %s' % (DN[x]))
+                    row_temp['DirectoryNumber']    = DN[x]
+                    row_temp['routePartitionName'] = Partiton[x]
+                    cspaxl_LineGroup.Update(logger, service, row_temp)
 
 # Main Function
 if __name__=='__main__':

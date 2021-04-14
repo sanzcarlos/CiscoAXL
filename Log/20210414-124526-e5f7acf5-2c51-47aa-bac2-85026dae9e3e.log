@@ -1,0 +1,25 @@
+2021-04-14 12:45:26 | axl_zeep.py       :347  | INFO      | Estamos usando Python v3.7.3
+2021-04-14 12:45:26 | axl_zeep.py       :64   | DEBUG     | Ha entrado en la funcion parse_command_line()
+2021-04-14 12:45:26 | axl_zeep.py       :87   | DEBUG     | Se ha pasado un fichero de configuracion
+2021-04-14 12:45:26 | axl_zeep.py       :89   | INFO      | Ha seleccionado el fichero de configuracion: conf/NTT-Staging.cfg
+2021-04-14 12:45:26 | axl_zeep.py       :92   | DEBUG     | Se ha pasado un fichero de carga masiva
+2021-04-14 12:45:26 | axl_zeep.py       :94   | INFO      | Ha seleccionado el fichero de carga masiva: csv/0011.csv
+2021-04-14 12:45:26 | axl_zeep.py       :354  | INFO      | Se ha seleccionado el cliente: NTT STAGING
+2021-04-14 12:45:26 | axl_zeep.py       :146  | DEBUG     | Ha entrado en la funcion client_soap()
+2021-04-14 12:45:26 | axl_zeep.py       :156  | DEBUG     | El sistema operativo es: Linux
+2021-04-14 12:45:26 | axl_zeep.py       :161  | DEBUG     | El valor de csp_cmserver es: 192.168.80.230
+2021-04-14 12:45:26 | axl_zeep.py       :162  | DEBUG     | El valor de csp_username es: axltest
+2021-04-14 12:45:26 | axl_zeep.py       :163  | DEBUG     | El valor de csp_version es: 12.5
+2021-04-14 12:45:26 | axl_zeep.py       :164  | DEBUG     | El valor de csp_location es: https://192.168.80.230/axl/
+2021-04-14 12:45:26 | axl_zeep.py       :165  | DEBUG     | El valor de wsdl es: file:///root/git/CiscoAXL/Schema/CUCM/12.5/AXLAPI.wsdl
+2021-04-14 12:45:29 | axl_zeep.py       :204  | INFO      | Se ha creado el cliente SOAP.
+2021-04-14 12:45:29 | axl_zeep.py       :217  | DEBUG     | Ha entrado en la funcion AltaSede
+2021-04-14 12:45:29 | axl_zeep.py       :227  | INFO      | Se ha abierto el archivo csv/0011.csv
+2021-04-14 12:45:29 | axl_zeep.py       :316  | INFO      | We have to add the Directory Number ['6001102', '6001181'] to the Line Group
+2021-04-14 12:45:29 | axl_zeep.py       :322  | INFO      | We have to add the Directory Number : 6001181
+2021-04-14 12:45:29 | cspaxl_LineGroup.py:211  | DEBUG     | Se ha entrado en la funcion Update del archivo cspaxl_LineGroup.py
+2021-04-14 12:45:29 | cspaxl_LineGroup.py:222  | INFO      | {'name': 'LG_OF0011', 'members': {'member': {'lineSelectionOrder': 2, 'directoryNumber': {'pattern': '6001181', 'routePartitionName': 'P_LG_Oficinas'}}}}
+2021-04-14 12:45:29 | cspaxl_LineGroup.py:226  | DEBUG     | (<class 'TypeError'>, TypeError('Choice elements only work with keyword arguments'), <traceback object at 0x7f13dd61f1c8>)
+2021-04-14 12:45:29 | cspaxl_LineGroup.py:227  | ERROR     | Choice elements only work with keyword arguments
+2021-04-14 12:45:29 | axl_zeep.py       :314  | INFO      | We do not have to add the Directory Number to the Line Group
+2021-04-14 12:45:29 | axl_zeep.py       :360  | INFO      | Se cerrara el programa

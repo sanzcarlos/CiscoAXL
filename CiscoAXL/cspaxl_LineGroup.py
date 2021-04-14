@@ -209,3 +209,31 @@ def Update(logger,csp_soap_client,cucm_variable_axl):
 
     # Mandatory (pattern,usage,routePartitionName)
     logger.debug('Se ha entrado en la funcion Update del archivo cspaxl_LineGroup.py')
+
+    # Comprobamos el Line Group
+    try:
+        result = csp_soap_client.getLineGroup(name='LG_OF'+cucm_variable_axl['SiteID'])
+    except:
+        logger.debug(sys.exc_info())
+        logger.error(sys.exc_info()[1])
+        return {'Status': False, 'Detail': sys.exc_info()[1]}
+    else:
+        axl_cucm = {}
+        axl_cucm = {'member':{'lineSelectionOrder':len(result['return']['lineGroup']['members']['member']),
+                              'directoryNumber':{'pattern':cucm_variable_axl['DirectoryNumber'],
+                                                 'routePartitionName':cucm_variable_axl['routePartitionName']} } }
+
+        try:
+            result = csp_soap_client.updateLineGroup(name='LG_OF' + cucm_variable_axl['SiteID'],addMembers=axl_cucm)
+        except:
+            logger.debug(sys.exc_info())
+            logger.error(sys.exc_info()[1])
+            return {'Status': False, 'Detail': sys.exc_info()[1]}
+        else:
+            logger.info(result)
+            csp_table = PrettyTable(['UUID','Line Group','Add Members'])
+            csp_table.add_row([result['return'][:],'LG_OF' + cucm_variable_axl['SiteID'], cucm_variable_axl['DirectoryNumber'] +'/'+cucm_variable_axl['routePartitionName'] ])
+            csp_table_response = csp_table.get_string(fields=['UUID','Line Group','Add Members'], sortby="UUID").encode('latin-1')
+            logger.info('Result:\n%s' % (csp_table_response.decode("utf-8")))
+            return {'Status':True,'Detail':csp_table_response}
+
