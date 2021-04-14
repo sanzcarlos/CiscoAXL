@@ -116,6 +116,7 @@ def Add(logger,csp_soap_client,cucm_variable_axl):
     axl_cucm['locationName']          = 'L_' + cucm_variable_axl['SiteID']
     axl_cucm['devicePoolName']        = 'DP_' + cucm_variable_axl['SiteID'] + '_ORANGE'
     axl_cucm['useTrustedRelayPoint']  = 'Default'
+    axl_cucm['phoneTemplateName']     = cucm_variable_axl['Phone_Button_Template']
     axl_cucm['commonPhoneConfigName'] = 'Standard Common Phone Profile'
     axl_cucm['builtInBridgeStatus']   = 'Default'
     axl_cucm['packetCaptureMode']     = 'None'

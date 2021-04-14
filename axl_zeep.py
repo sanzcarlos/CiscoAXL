@@ -225,26 +225,27 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
         logger.info('Se ha abierto el archivo %s' % (csv_config_file))
 
         field_names = (
-            'SiteID', 'UserFirstName', 'UserSurname', 'UserId', 'DirectoryNumber', 'routePartitionName' , 'ToIPModel', 'MACAddress', 'DID', 'CallingSearchSpace', 'VoiceMail', 'Locale', 'SD_Number', 'SD_Label' )
+            'SiteID', 'UserFirstName', 'UserSurname', 'UserId', 'DirectoryNumber', 'routePartitionName' , 'ToIPModel', 'MACAddress', 'DID', 'CallingSearchSpace', 'VoiceMail', 'Locale', 'SD_Number', 'SD_Label', 'Phone_Button_Template' )
         file_reader = csv.DictReader(csv_file, field_names)
 
-        #add_status = PrettyTable(['SiteID', 'UserFirstName', 'UserSurname', 'UserId', 'DirectoryNumber', 'routePartitionName' , 'ToIPModel', 'MACAddress', 'DID', 'CallingSearchSpace', 'VoiceMail', 'Locale', 'SD_Number', 'SD_Label'])
+        #add_status = PrettyTable(['SiteID', 'UserFirstName', 'UserSurname', 'UserId', 'DirectoryNumber', 'routePartitionName' , 'ToIPModel', 'MACAddress', 'DID', 'CallingSearchSpace', 'VoiceMail', 'Locale', 'SD_Number', 'SD_Label', 'Phone_Button_Template'])
         for row in file_reader:
             # Borramos los espacios al principio y final que puedan tener
-            row['SiteID']               = row['SiteID'].strip()
-            row['UserFirstName']        = row['UserFirstName'].strip()
-            row['UserSurname']          = row['UserSurname'].strip()
-            row['DirectoryNumber']      = row['DirectoryNumber'].strip()
-            row['ToIPModel']            = row['ToIPModel'].strip()
-            row['MACAddress']           = row['MACAddress'].strip()
-            row['DID']                  = row['DID'].strip()
-            row['CallingSearchSpace']   = row['CallingSearchSpace'].strip()
-            row['CSSForward']           = row['CallingSearchSpace'].strip()
-            row['VoiceMail']            = row['VoiceMail'].strip()
-            row['Locale']               = row['Locale'].strip()
-            row['routePartitionName']   = row['routePartitionName'].strip()
-            row['SD_Number']            = row['SD_Number'].strip()
-            row['SD_Label']             = row['SD_Label'].strip()
+            row['SiteID']                = row['SiteID'].strip()
+            row['UserFirstName']         = row['UserFirstName'].strip()
+            row['UserSurname']           = row['UserSurname'].strip()
+            row['DirectoryNumber']       = row['DirectoryNumber'].strip()
+            row['ToIPModel']             = row['ToIPModel'].strip()
+            row['MACAddress']            = row['MACAddress'].strip()
+            row['DID']                   = row['DID'].strip()
+            row['CallingSearchSpace']    = row['CallingSearchSpace'].strip()
+            row['CSSForward']            = row['CallingSearchSpace'].strip()
+            row['VoiceMail']             = row['VoiceMail'].strip()
+            row['Locale']                = row['Locale'].strip()
+            row['routePartitionName']    = row['routePartitionName'].strip()
+            row['SD_Number']             = row['SD_Number'].strip()
+            row['SD_Label']              = row['SD_Label'].strip()
+            row['Phone_Button_Template'] = row['Phone_Button_Template'].strip()
             # Si no incluimos una Partition ponemos una por defecto
             if row['routePartitionName'] == '':
                 row['routePartitionName'] = 'P_Internas'
@@ -258,7 +259,6 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
             else:
                 row['voiceMailProfileName'] = 'NoVoiceMail'
             
-
             # Region
             cspaxl_Region.Add(logger, service, row)
 
@@ -299,10 +299,8 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
                     row_temp['DirectoryNumber']    = DN[x]
                     row_temp['routePartitionName'] = Partiton[x]
                     cspaxl_Line.Add(logger, service, row_temp)
-            
             # Device
             cspaxl_Phone.Add(logger, service, row)
-
             # Translation Pattern
             cspaxl_TransPattern.Add(logger, service, row)
 
