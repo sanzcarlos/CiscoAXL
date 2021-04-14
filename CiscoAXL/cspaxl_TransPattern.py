@@ -96,7 +96,7 @@ def Add(logger,csp_soap_client,cucm_variable_axl):
             logger.info('El Translation Pattern %s en la Partition %s no existe en el CUCM' % (axl_cucm['pattern'],axl_cucm['routePartitionName']))
         else:
             logger.info('El Translation Pattern %s en la Partition %s existe en el CUCM' % (axl_cucm['pattern'],axl_cucm['routePartitionName']))
-            return {'Status': False, 'Detail': cucm_variable_axl['Pattern']}
+            return {'Status': False, 'Detail': axl_cucm['pattern']}
 
     # Damos de alta el Translation Pattern
     try:

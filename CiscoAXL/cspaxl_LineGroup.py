@@ -218,8 +218,12 @@ def Update(logger,csp_soap_client,cucm_variable_axl):
         logger.error(sys.exc_info()[1])
         return {'Status': False, 'Detail': sys.exc_info()[1]}
     else:
+        if result['return']['lineGroup']['members'] == None:
+            axl_lineSelectionOrder = 0
+        else:
+            axl_lineSelectionOrder = len(result['return']['lineGroup']['members']['member'])
         axl_cucm = {}
-        axl_cucm = {'member':{'lineSelectionOrder':len(result['return']['lineGroup']['members']['member']),
+        axl_cucm = {'member':{'lineSelectionOrder':axl_lineSelectionOrder,
                               'directoryNumber':{'pattern':cucm_variable_axl['DirectoryNumber'],
                                                  'routePartitionName':cucm_variable_axl['routePartitionName']} } }
 

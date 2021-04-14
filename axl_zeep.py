@@ -336,7 +336,7 @@ if __name__=='__main__':
     element_config_file = None
     history = None
     logger = logging.getLogger('cisco.cucm.axl.zeep')
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.INFO)
 
     console = logging.StreamHandler()
     formatter = logging.Formatter('%(asctime)-18s | %(filename)-18s:%(lineno)-4s | %(levelname)-9s | %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
