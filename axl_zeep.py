@@ -252,7 +252,7 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
 
             row['callPickupGroupName']  = 'CPG_OF' + row['SiteID'].strip()
             row['callManagerGroupName'] = 'CMG_Sub21CD1Sub06CD2'
-            row['dateTimeSettingName'] = 'DTG_Spain'
+            row['dateTimeSettingName'] = 'GT_Spain'
             
             if row['VoiceMail'] == 'YES':
                 row['voiceMailProfileName'] = 'CAIXABANK_VMENABLED'

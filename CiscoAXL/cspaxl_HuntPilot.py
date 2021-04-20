@@ -106,7 +106,7 @@ def Add(logger,csp_soap_client,cucm_variable_axl):
     axl_cucm_member = {}
     axl_cucm_member['usePersonalPreferences'] = 'false' 
     axl_cucm_member['destination']            = '8000000' 
-    axl_cucm_member['callingSearchSpaceName'] = 'CSS_All'
+    axl_cucm_member['callingSearchSpaceName'] = 'CSS_Internas'
 
     axl_cucm['forwardHuntNoAnswer'] = axl_cucm_member
     axl_cucm['forwardHuntBusy']     = axl_cucm_member
