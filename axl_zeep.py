@@ -131,13 +131,15 @@ def get_usage():
 
 # This class lets you view the incoming and outgoing http headers and/or XML
 class MyLoggingPlugin(Plugin):
-    def ingress(self, envelope, http_headers, operation):
-        print(etree.tostring(envelope, pretty_print=True))
-        return envelope, http_headers
-    
     def egress(self, envelope, http_headers, operation, binding_options):
-        print(etree.tostring(envelope, pretty_print=True))
-        return envelope, http_headers
+        # Format the request body as pretty printed XML
+        xml = etree.tostring( envelope, pretty_print = True, encoding = 'unicode')
+        print( f'\nRequest\n-------\nHeaders:\n{http_headers}\n\nBody:\n{xml}' )
+    
+    def ingress(self, envelope, http_headers, operation):
+        # Format the response body as pretty printed XML
+        xml = etree.tostring( envelope, pretty_print = True, encoding = 'unicode')
+        print( f'\nResponse\n-------\nHeaders:\n{http_headers}\n\nBody:\n{xml}' )
 
 # Funcion para crear el cliente SOAP que atacara a Cisco Unified Communications Manager
 def client_soap(config_file):
@@ -166,6 +168,12 @@ def client_soap(config_file):
     global history
     history = HistoryPlugin()
 
+    # Change to true to enable output of request/response headers and XML
+    if logger.level > 10:
+        DEBUG = False
+    else:
+        DEBUG = True
+
     # The first step is to create a SOAP client session
     session = Session()
 
@@ -185,7 +193,7 @@ def client_soap(config_file):
         csp_soap_client = Client(wsdl,
                                 settings=settings,
                                 transport=transport,
-                                plugins=[MyLoggingPlugin(),history],
+                                plugins=[MyLoggingPlugin(),history] if DEBUG else [ ],
                                 )
         service = csp_soap_client.create_service("{http://www.cisco.com/AXLAPIService/}AXLAPIBinding", csp_location)
 
