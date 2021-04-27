@@ -212,6 +212,14 @@ def client_soap(config_file):
 
 # Funcion para dar de alta una sede
 def AltaSede(logger, service, cspconfigfile, csv_config_file):
+    """Function to create a new site
+
+    Args:
+        logger (logging): [description]
+        service ([type]): [description]
+        cspconfigfile ([type]): [description]
+        csv_config_file ([type]): [description]
+    """
     '''
     # *------------------------------------------------------------------
     # * function AltaSede(logger, service, cspconfigfile, csv_config_file):
