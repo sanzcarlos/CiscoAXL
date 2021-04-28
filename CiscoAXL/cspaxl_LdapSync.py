@@ -24,8 +24,6 @@
 # *
 
 # Import Modules
-# Import Modules
-import sys
 
 def do_start(logger,csp_soap_client,cucm_variable_axl,cspconfigfile):
     # *------------------------------------------------------------------

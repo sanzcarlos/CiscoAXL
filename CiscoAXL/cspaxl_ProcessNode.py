@@ -24,7 +24,6 @@
 # *
 
 # Import Modules
-import sys
 from prettytable import PrettyTable
 '''
 def Add(logger,csp_soap_client,cucm_variable_axl):

@@ -24,7 +24,6 @@
 # *
 
 # Import Modules
-import sys
 
 def Get(logger,csp_soap_client,cucm_variable_axl):
     # *------------------------------------------------------------------

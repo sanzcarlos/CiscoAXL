@@ -24,7 +24,6 @@
 # *
 
 # Import Modules
-import sys
 from prettytable import PrettyTable
 from zeep.exceptions import Fault
 

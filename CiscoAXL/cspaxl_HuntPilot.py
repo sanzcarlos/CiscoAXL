@@ -24,9 +24,6 @@
 # *
 
 # Import Modules
-# Import Modules
-
-import sys
 import re
 from unicodedata import normalize
 from prettytable import PrettyTable
