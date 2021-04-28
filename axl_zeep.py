@@ -35,6 +35,7 @@ from zeep import Client, Settings, Plugin
 from zeep.transports import Transport
 from zeep.cache import SqliteCache
 from zeep.plugins import HistoryPlugin
+from zeep.exceptions import Fault
 from prettytable import PrettyTable
 from configobj import ConfigObj
 
@@ -143,6 +144,14 @@ class MyLoggingPlugin(Plugin):
 
 # Funcion para crear el cliente SOAP que atacara a Cisco Unified Communications Manager
 def client_soap(config_file):
+    """Function to create a SOAP Client
+
+    Args:
+        config_file (configobj): Dict with config of Customer
+
+    Returns:
+        ServiceProxy: Return of the Class zeep.proxy.ServiceProxy
+    """
     logger.debug('Ha entrado en la funcion client_soap()')
     csp_cmserver = cspconfigfile['CUCM']['server']
     csp_username = cspconfigfile['CUCM']['user']
@@ -215,28 +224,21 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
     """Function to create a new site
 
     Args:
-        logger (logging): [description]
-        service ([type]): [description]
-        cspconfigfile ([type]): [description]
+        logger (logging): logging service
+        service (ServiceProxy): Class zeep.proxy.ServiceProxy
+        config_file (configobj): Dict with config of Customer
         csv_config_file ([type]): [description]
+    
+    Copyright (C) 2021 Carlos Sanz <carlos.sanzpenas@gmail.com>
     """
-    '''
-    # *------------------------------------------------------------------
-    # * function AltaSede(logger, service, cspconfigfile, csv_config_file):
-    # *
-    # * Copyright (C) 2021 Carlos Sanz <carlos.sanzpenas@gmail.com>
-    # *
-    # *------------------------------------------------------------------
-    '''
     logger.debug('Ha entrado en la funcion AltaSede')
 
     try:
         csv_file = open(csv_config_file, 'r', encoding='utf-8')
-    except:
+    except Fault as err:
         logger.error('Se ha producido un error al abrir el archivo %s' % (csv_config_file))
-        logger.debug(sys.exc_info())
-        logger.error(sys.exc_info()[1])
-        sys.exit()
+        logger.debug(err)
+        sys.exit(1)
     else:
         logger.info('Se ha abierto el archivo %s' % (csv_config_file))
 
