@@ -218,7 +218,7 @@ def Update(logger,csp_soap_client,cucm_variable_axl):
         logger.error(sys.exc_info()[1])
         return {'Status': False, 'Detail': sys.exc_info()[1]}
     else:
-        if result['return']['lineGroup']['members'] == None:
+        if result['return']['lineGroup']['members'] is None:
             axl_lineSelectionOrder = 0
         else:
             axl_lineSelectionOrder = len(result['return']['lineGroup']['members']['member'])
