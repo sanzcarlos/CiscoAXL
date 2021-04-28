@@ -57,10 +57,9 @@ def do_start(logger,csp_soap_client,cucm_variable_axl,cspconfigfile):
     try:
         csp_ldap = {'name': cucm_variable_axl}
         result = csp_soap_client.service.doLdapSync(csp_ldap,sync=0)
-    except:
-        logger.debug(sys.exc_info())
-        logger.error(sys.exc_info()[1])
-        return {'Status': False, 'Detail': sys.exc_info()[1]}
+    except Fault as err:
+        logger.error('ERROR: %s' % (err))
+        return {'Status': False, 'Detail': err}
     else:
         return {'Status':True,'Detail':result['return']}
 
@@ -90,10 +89,9 @@ def do_cancel(logger,csp_soap_client,cucm_variable_axl):
     # Damos de alta el Translation Pattern
     try:
         result = csp_soap_client.service.doLdapSync(name=cucm_variable_axl,sync='false')
-    except:
-        logger.debug(sys.exc_info())
-        logger.error(sys.exc_info()[1])
-        return {'Status': False, 'Detail': sys.exc_info()[1]}
+    except Fault as err:
+        logger.error('ERROR: %s' % (err))
+        return {'Status': False, 'Detail': err}
     else:
         return {'Status':True,'Detail':result['return']}
 

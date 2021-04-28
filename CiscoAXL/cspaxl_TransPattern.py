@@ -86,10 +86,9 @@ def Add(logger,csp_soap_client,cucm_variable_axl):
         csp_soap_returnedTags = {'pattern': '', 'routePartitionName': ''}
         csp_soap_searchCriteria = {'pattern': axl_cucm['pattern'],'routePartitionName':axl_cucm['routePartitionName']}
         result = csp_soap_client.listTransPattern(csp_soap_searchCriteria,csp_soap_returnedTags)
-    except:
-        logger.debug(sys.exc_info())
-        logger.error(sys.exc_info()[1])
-        return {'Status': False, 'Detail': result}
+    except Fault as err:
+        logger.error('ERROR: %s' % (err))
+        return {'Status': False, 'Detail': err}
 
     else:
         if (result['return'] is None):
@@ -101,10 +100,9 @@ def Add(logger,csp_soap_client,cucm_variable_axl):
     # Damos de alta el Translation Pattern
     try:
         result = csp_soap_client.addTransPattern(axl_cucm)
-    except:
-        logger.debug(sys.exc_info())
-        logger.error(sys.exc_info()[1])
-        return {'Status': False, 'Detail': sys.exc_info()[1]}
+    except Fault as err:
+        logger.error('ERROR: %s' % (err))
+        return {'Status': False, 'Detail': err}
     else:
         csp_table = PrettyTable(['UUID','pattern','routePartitionName'])
         csp_table.add_row([result['return'][:],axl_cucm['pattern'], axl_cucm['routePartitionName'] ])
@@ -139,11 +137,9 @@ def Get(logger,csp_soap_client,cucm_variable_axl):
         #result = csp_soap_client.service.getTransPattern(pattern='',cucm_variable_axl)
         result = csp_soap_client.getTransPattern({'uuid': 'a7bacb02-b820-85a9-ca53-6bbfce94c9c9'})
         #result = csp_soap_client.service.getTransPattern(pattern='17150',routePartitionName='INTERNA')
-    except:
-        logger.debug(sys.exc_info())
-        logger.error(sys.exc_info()[1])
-        print (result)
-        return {'Status': False, 'Detail': sys.exc_info()[1]}
+    except Fault as err:
+        logger.error('ERROR: %s' % (err))
+        return {'Status': False, 'Detail': err}
     else:
         print (result)
         #csp_table = PrettyTable(['id','name','description','mac','ipv6Name','nodeUsage','lbmHubGroup','processNodeRole'])
@@ -179,10 +175,9 @@ def List(logger,csp_soap_client,cucm_variable_axl):
 
     try:
         result = csp_soap_client.service.listTransPattern(searchCriteria,returnedTags)
-    except:
-        logger.debug(sys.exc_info())
-        logger.error(sys.exc_info()[1])
-        return {'Status': False, 'Detail': sys.exc_info()[1]}
+    except Fault as err:
+        logger.error('ERROR: %s' % (err))
+        return {'Status': False, 'Detail': err}
     else:
         csp_table = PrettyTable(['id','pattern','routePartitionName','callingSearchSpaceName','calledPartyTransformationMask'])
         for x in range(0, len(result['return']['transPattern'])):
@@ -218,10 +213,9 @@ def Remove(logger,csp_soap_client,cucm_variable_axl):
     # Mandatory (pattern,usage,routePartitionName)
     try:
         result = csp_soap_client.service.removeTransPattern(pattern=cucm_variable_axl['pattern'],routePartitionName=cucm_variable_axl['routePartitionName'])
-    except:
-        logger.debug(sys.exc_info())
-        logger.error(sys.exc_info()[1])
-        return {'Status': False, 'Detail': sys.exc_info()[1]}
+    except Fault as err:
+        logger.error('ERROR: %s' % (err))
+        return {'Status': False, 'Detail': err}
     else:
         csp_table = PrettyTable(['UUID','pattern','routePartitionName'])
         csp_table.add_row([result['return'][:],cucm_variable_axl['pattern'], cucm_variable_axl['routePartitionName'] ])

@@ -53,10 +53,9 @@ def Get(logger,csp_soap_client,cucm_variable_axl):
     # Mandatory (processNodeName)
     try:
         result = csp_soap_client.service.getCCMVersion(processNodeName=cucm_variable_axl)
-    except:
-        logger.debug(sys.exc_info())
-        logger.error(sys.exc_info()[1])
-        return {'Status':False,'Detail':sys.exc_info()[1]}
+    except Fault as err:
+        logger.error('ERROR: %s' % (err))
+        return {'Status': False, 'Detail': err}
     else:
         '''
         print result

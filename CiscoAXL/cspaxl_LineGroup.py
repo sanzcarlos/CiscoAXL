@@ -64,10 +64,9 @@ def Add(logger,csp_soap_client,cucm_variable_axl):
     # Damos de alta el Device Pool
     try:
         result = csp_soap_client.addLineGroup(axl_cucm)
-    except:
-        logger.debug(sys.exc_info())
-        logger.error('%s' % (sys.exc_info()[1]))
-        return {'Status': False, 'Detail': sys.exc_info()[1]}
+    except Fault as err:
+        logger.error('ERROR: %s' % (err))
+        return {'Status': False, 'Detail': err}
     else:
         csp_table = PrettyTable(['UUID','Line Group'])
         csp_table.add_row([result['return'][:],axl_cucm['name'] ])
@@ -101,10 +100,9 @@ def Get(logger,csp_soap_client,cucm_variable_axl):
     logger.debug('Se ha entrado en la funcion Get del archivo cspaxl_LineGroup.py')
     try:
         result = csp_soap_client.getLineGroup(name='LG_OF'+cucm_variable_axl['SiteID'])
-    except:
-        logger.debug(sys.exc_info())
-        logger.error(sys.exc_info()[1])
-        return {'Status': False, 'Detail': sys.exc_info()[1]}
+    except Fault as err:
+        logger.error('ERROR: %s' % (err))
+        return {'Status': False, 'Detail': err}
     else:
         logger.info('Result:\n%s' % (result))
         return {'Status':True,'Detail':result}
@@ -137,10 +135,9 @@ def List(logger,csp_soap_client,cucm_variable_axl):
 
     try:
         result = csp_soap_client.service.listProcessNode(searchCriteria,returnedTags)
-    except:
-        logger.debug(sys.exc_info())
-        logger.error(sys.exc_info()[1])
-        return {'Status': False, 'Detail': sys.exc_info()[1]}
+    except Fault as err:
+        logger.error('ERROR: %s' % (err))
+        return {'Status': False, 'Detail': err}
     else:
         csp_table = PrettyTable(['id','name','description','mac','ipv6Name','nodeUsage','lbmHubGroup','processNodeRole'])
         for x in range(0, len(result['return']['processNode'])):
@@ -174,10 +171,9 @@ def Remove(logger,csp_soap_client,cucm_variable_axl):
     # Mandatory (pattern,usage,routePartitionName)
     try:
         result = csp_soap_client.service.removeTransPattern(pattern=cucm_variable_axl['pattern'],routePartitionName=cucm_variable_axl['routePartitionName'])
-    except:
-        logger.debug(sys.exc_info())
-        logger.error(sys.exc_info()[1])
-        return {'Status': False, 'Detail': sys.exc_info()[1]}
+    except Fault as err:
+        logger.error('ERROR: %s' % (err))
+        return {'Status': False, 'Detail': err}
     else:
         csp_table = PrettyTable(['UUID','pattern','routePartitionName'])
         csp_table.add_row([result['return'][:],cucm_variable_axl['pattern'], cucm_variable_axl['routePartitionName'] ])
@@ -213,10 +209,9 @@ def Update(logger,csp_soap_client,cucm_variable_axl):
     # Comprobamos el Line Group
     try:
         result = csp_soap_client.getLineGroup(name='LG_OF'+cucm_variable_axl['SiteID'])
-    except:
-        logger.debug(sys.exc_info())
-        logger.error(sys.exc_info()[1])
-        return {'Status': False, 'Detail': sys.exc_info()[1]}
+    except Fault as err:
+        logger.error('ERROR: %s' % (err))
+        return {'Status': False, 'Detail': err}
     else:
         if result['return']['lineGroup']['members'] is None:
             axl_lineSelectionOrder = 0
@@ -229,10 +224,9 @@ def Update(logger,csp_soap_client,cucm_variable_axl):
 
         try:
             result = csp_soap_client.updateLineGroup(name='LG_OF' + cucm_variable_axl['SiteID'],addMembers=axl_cucm)
-        except:
-            logger.debug(sys.exc_info())
-            logger.error(sys.exc_info()[1])
-            return {'Status': False, 'Detail': sys.exc_info()[1]}
+        except Fault as err:
+            logger.error('ERROR: %s' % (err))
+            return {'Status': False, 'Detail': err}
         else:
             csp_table = PrettyTable(['UUID','Line Group','Add Members'])
             csp_table.add_row([result['return'][:],'LG_OF' + cucm_variable_axl['SiteID'], cucm_variable_axl['DirectoryNumber'] +'/'+cucm_variable_axl['routePartitionName'] ])
