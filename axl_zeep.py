@@ -243,10 +243,10 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
         logger.info('Se ha abierto el archivo %s' % (csv_config_file))
 
         field_names = (
-            'SiteID', 'UserFirstName', 'UserSurname', 'UserId', 'DirectoryNumber', 'routePartitionName' , 'ToIPModel', 'MACAddress', 'DID', 'CallingSearchSpace', 'VoiceMail', 'Locale', 'SD_Number', 'SD_Label', 'Phone_Button_Template' )
+            'SiteID', 'UserFirstName', 'UserSurname', 'UserId', 'DirectoryNumber', 'routePartitionName' , 'ToIPModel', 'MACAddress', 'DID', 'CallingSearchSpace', 'VoiceMail', 'Locale', 'SD_Number', 'SD_Label', 'Phone_Button_Template', 'DIDMain' )
         file_reader = csv.DictReader(csv_file, field_names)
 
-        #add_status = PrettyTable(['SiteID', 'UserFirstName', 'UserSurname', 'UserId', 'DirectoryNumber', 'routePartitionName' , 'ToIPModel', 'MACAddress', 'DID', 'CallingSearchSpace', 'VoiceMail', 'Locale', 'SD_Number', 'SD_Label', 'Phone_Button_Template'])
+        #add_status = PrettyTable(['SiteID', 'UserFirstName', 'UserSurname', 'UserId', 'DirectoryNumber', 'routePartitionName' , 'ToIPModel', 'MACAddress', 'DID', 'CallingSearchSpace', 'VoiceMail', 'Locale', 'SD_Number', 'SD_Label', 'Phone_Button_Template', 'DIDMain'])
         for row in file_reader:
             # Borramos los espacios al principio y final que puedan tener
             row['SiteID']                = row['SiteID'].strip()
@@ -270,7 +270,8 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
 
             row['callPickupGroupName']  = 'CPG_OF' + row['SiteID'].strip()
             row['callManagerGroupName'] = 'CMG_Sub21CD1Sub06CD2'
-            row['dateTimeSettingName'] = 'GT_Spain'
+            row['dateTimeSettingName']  = 'GT_Spain'
+            row['DIDMain']              = row['DIDMain'].strip()
             
             if row['VoiceMail'] == 'YES':
                 row['voiceMailProfileName'] = 'CAIXABANK_VMENABLED'
@@ -301,42 +302,49 @@ def AltaSede(logger, service, cspconfigfile, csv_config_file):
             # Line
             # Comprobamos si tenemos un Directory Number
             if row['DirectoryNumber'] == '':
-                logger.error('No tenemos Directory Number y no podemos continuar en el actual registro')
-                continue
-            # Comprobamos el numero de Directory Numbers que han puesto - El separador es |
-            if len(row['DirectoryNumber'].split('|')) == 1:
-                logger.info('Tenemos que dar de alta un Directory Number')
-                cspaxl_Line.Add(logger, service, row)
+                logger.error('No tenemos Directory Number y no podemos crear el Device, Translation Pattern y actualizar el Line Group')
             else:
-                logger.info('Tenemos que dar de alta varios Directory Number:: %s' % (row['DirectoryNumber'].split('|')))
-                row_temp = row.copy()
-                DN = row['DirectoryNumber'].split('|')
-                Partiton = row['routePartitionName'].split('|')
-                for x in range(0,len(DN)):
-                    logger.info('Vamos a dar de alta el siguiente Directory Number: %s' % (DN[x]))
-                    row_temp['DirectoryNumber']    = DN[x]
-                    row_temp['routePartitionName'] = Partiton[x]
-                    cspaxl_Line.Add(logger, service, row_temp)
-            # Device
-            cspaxl_Phone.Add(logger, service, row)
+                # Comprobamos el numero de Directory Numbers que han puesto - El separador es |
+                if len(row['DirectoryNumber'].split('|')) == 1:
+                    logger.info('Tenemos que dar de alta un Directory Number')
+                    cspaxl_Line.Add(logger, service, row)
+                else:
+                    logger.info('Tenemos que dar de alta varios Directory Number:: %s' % (row['DirectoryNumber'].split('|')))
+                    row_temp = row.copy()
+                    DN = row['DirectoryNumber'].split('|')
+                    Partiton = row['routePartitionName'].split('|')
+                    for x in range(0,len(DN)):
+                        logger.info('Vamos a dar de alta el siguiente Directory Number: %s' % (DN[x]))
+                        row_temp['DirectoryNumber']    = DN[x]
+                        row_temp['routePartitionName'] = Partiton[x]
+                        cspaxl_Line.Add(logger, service, row_temp)
+                # Device
+                cspaxl_Phone.Add(logger, service, row)
+
+                # Add Line Group
+                # Comprobamos el numero de Directory Numbers que han puesto - El separador es |
+                if len(row['DirectoryNumber'].split('|')) == 1:
+                    logger.info('We do not have to add the Directory Number to the Line Group')
+                else:
+                    logger.info('We have to add the Directory Number %s to the Line Group' % (row['DirectoryNumber'].split('|')))
+                    row_temp = row.copy()
+                    DN = row['DirectoryNumber'].split('|')
+                    Partiton = row['routePartitionName'].split('|')
+                    # Empezamos por el segundo elemento (1)
+                    for x in range(1,len(DN)):
+                        logger.info('We have to add the Directory Number : %s' % (DN[x]))
+                        row_temp['DirectoryNumber']    = DN[x]
+                        row_temp['routePartitionName'] = Partiton[x]
+                        cspaxl_LineGroup.Update(logger, service, row_temp)
+
             # Translation Pattern
             cspaxl_TransPattern.Add(logger, service, row)
-
-            # Add Line Group
-            # Comprobamos el numero de Directory Numbers que han puesto - El separador es |
-            if len(row['DirectoryNumber'].split('|')) == 1:
-                logger.info('We do not have to add the Directory Number to the Line Group')
-            else:
-                logger.info('We have to add the Directory Number %s to the Line Group' % (row['DirectoryNumber'].split('|')))
+            if row['DIDMain'] != '':
+                # Tenemos que crearnos el DID Principal
                 row_temp = row.copy()
-                DN = row['DirectoryNumber'].split('|')
-                Partiton = row['routePartitionName'].split('|')
-                # Empezamos por el segundo elemento (1)
-                for x in range(1,len(DN)):
-                    logger.info('We have to add the Directory Number : %s' % (DN[x]))
-                    row_temp['DirectoryNumber']    = DN[x]
-                    row_temp['routePartitionName'] = Partiton[x]
-                    cspaxl_LineGroup.Update(logger, service, row_temp)
+                row_temp['DID']    = row['DIDMain']
+                row_temp['DirectoryNumber']    = '8' + row['SiteID'] + '00'
+                cspaxl_TransPattern.Add(logger, service, row_temp)
 
 # Main Function
 if __name__=='__main__':

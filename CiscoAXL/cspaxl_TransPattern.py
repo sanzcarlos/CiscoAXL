@@ -25,6 +25,7 @@
 
 # Import Modules
 from prettytable import PrettyTable
+from zeep.exceptions import Fault
 
 def Add(logger,csp_soap_client,cucm_variable_axl):
     # *------------------------------------------------------------------
@@ -53,8 +54,10 @@ def Add(logger,csp_soap_client,cucm_variable_axl):
     axl_cucm = {}
     if cucm_variable_axl['DID'][0] == '+':
         axl_cucm['pattern'] = '\\' + cucm_variable_axl['DID']
-    else:
+    elif cucm_variable_axl['DID'][0] == '0':
         axl_cucm['pattern'] = cucm_variable_axl['DID']
+    else:
+        axl_cucm['pattern'] = '0' + cucm_variable_axl['DID']
     axl_cucm['description'] = 'DDI Entrante Oficina ' + cucm_variable_axl['SiteID'] + ' ORANGE'
 
     if len(cucm_variable_axl['DirectoryNumber'].split('|')) == 1:

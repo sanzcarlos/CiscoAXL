@@ -27,6 +27,8 @@
 import re
 from unicodedata import normalize
 from prettytable import PrettyTable
+from zeep.exceptions import Fault
+
 
 def String2ASCI (logger,text):
     # *------------------------------------------------------------------
