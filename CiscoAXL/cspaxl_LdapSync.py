@@ -24,6 +24,7 @@
 # *
 
 # Import Modules
+from zeep.exceptions import Fault
 
 def do_start(logger,csp_soap_client,cucm_variable_axl,cspconfigfile):
     # *------------------------------------------------------------------

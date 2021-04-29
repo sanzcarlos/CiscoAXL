@@ -25,6 +25,7 @@
 
 # Import Modules
 from prettytable import PrettyTable
+from zeep.exceptions import Fault
 
 def Add(logger,csp_soap_client,cucm_variable_axl):
     # *------------------------------------------------------------------
