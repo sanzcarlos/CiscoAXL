@@ -3,4 +3,4 @@ configobj==5.0.6
 requests==2.25.1
 lxml==4.6.3
 prettytable==2.1.0
-urllib3==1.26.4
+urllib3==1.26.5
