@@ -1,6 +1,6 @@
 zeep==4.1.0
 configobj==5.0.6
 requests==2.27.1
-lxml==4.8.0
+lxml==4.9.1
 prettytable==3.2.0
 urllib3==1.26.9
